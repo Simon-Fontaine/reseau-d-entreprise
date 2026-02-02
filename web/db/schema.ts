@@ -6,10 +6,10 @@ import {
   integer,
   pgEnum,
   pgTable,
-  serial,
   text,
   timestamp,
   unique,
+  uuid,
   varchar,
 } from "drizzle-orm/pg-core";
 
@@ -25,7 +25,7 @@ export const courseStatusEnum = pgEnum("course_status", [
 ]);
 
 export const users = pgTable("users", {
-  id: serial("id").primaryKey(),
+  id: uuid("id").defaultRandom().primaryKey(),
   fullName: varchar("full_name", { length: 100 }).notNull(),
   email: varchar("email", { length: 150 }).unique().notNull(),
   passwordHash: varchar("password_hash", { length: 255 }).notNull(),
@@ -33,21 +33,21 @@ export const users = pgTable("users", {
 });
 
 export const themes = pgTable("themes", {
-  id: serial("id").primaryKey(),
+  id: uuid("id").defaultRandom().primaryKey(),
   name: varchar("name", { length: 50 }).unique().notNull(),
 });
 
 export const courses = pgTable("courses", {
-  id: serial("id").primaryKey(),
+  id: uuid("id").defaultRandom().primaryKey(),
   title: varchar("title", { length: 200 }).notNull(),
   level: varchar("level", { length: 20 }).notNull(),
-  themeId: integer("theme_id").references(() => themes.id),
-  trainerId: integer("trainer_id").references(() => users.id),
+  themeId: uuid("theme_id").references(() => themes.id),
+  trainerId: uuid("trainer_id").references(() => users.id),
 });
 
 export const chapters = pgTable("chapters", {
-  id: serial("id").primaryKey(),
-  courseId: integer("course_id").references(() => courses.id),
+  id: uuid("id").defaultRandom().primaryKey(),
+  courseId: uuid("course_id").references(() => courses.id),
   title: varchar("title", { length: 200 }).notNull(),
   contentMarkdown: text("content_markdown"),
   orderIndex: integer("order_index").default(1),
@@ -56,9 +56,9 @@ export const chapters = pgTable("chapters", {
 export const enrollments = pgTable(
   "enrollments",
   {
-    id: serial("id").primaryKey(),
-    userId: integer("user_id").references(() => users.id),
-    courseId: integer("course_id").references(() => courses.id),
+    id: uuid("id").defaultRandom().primaryKey(),
+    userId: uuid("user_id").references(() => users.id),
+    courseId: uuid("course_id").references(() => courses.id),
     status: courseStatusEnum("status").default("en_cours"),
     progressPercent: integer("progress_percent").default(0),
   },
@@ -68,31 +68,31 @@ export const enrollments = pgTable(
 );
 
 export const chatMessages = pgTable("chat_messages", {
-  id: serial("id").primaryKey(),
-  courseId: integer("course_id").references(() => courses.id),
-  userId: integer("user_id").references(() => users.id),
+  id: uuid("id").defaultRandom().primaryKey(),
+  courseId: uuid("course_id").references(() => courses.id),
+  userId: uuid("user_id").references(() => users.id),
   messageContent: text("message_content").notNull(),
   sentAt: timestamp("sent_at").defaultNow(),
 });
 
 export const quizQuestions = pgTable("quiz_questions", {
-  id: serial("id").primaryKey(),
-  chapterId: integer("chapter_id").references(() => chapters.id),
+  id: uuid("id").defaultRandom().primaryKey(),
+  chapterId: uuid("chapter_id").references(() => chapters.id),
   questionText: text("question_text").notNull(),
   points: integer("points").default(1),
 });
 
 export const quizOptions = pgTable("quiz_options", {
-  id: serial("id").primaryKey(),
-  questionId: integer("question_id").references(() => quizQuestions.id),
+  id: uuid("id").defaultRandom().primaryKey(),
+  questionId: uuid("question_id").references(() => quizQuestions.id),
   optionText: varchar("option_text", { length: 255 }).notNull(),
   isCorrect: boolean("is_correct").default(false),
 });
 
 export const userQuizAttempts = pgTable("user_quiz_attempts", {
-  id: serial("id").primaryKey(),
-  userId: integer("user_id").references(() => users.id),
-  chapterId: integer("chapter_id").references(() => chapters.id),
+  id: uuid("id").defaultRandom().primaryKey(),
+  userId: uuid("user_id").references(() => users.id),
+  chapterId: uuid("chapter_id").references(() => chapters.id),
   scoreObtained: integer("score_obtained"),
   passed: boolean("passed").default(false),
 });

@@ -8,6 +8,23 @@ import { loginSchema } from "@/validations/auth";
 
 export const { handlers, auth, signIn, signOut } = NextAuth({
   ...authConfig,
+  callbacks: {
+    ...authConfig.callbacks,
+    async jwt({ token, user }) {
+      if (user) {
+        token.user = user;
+      }
+
+      return token;
+    },
+    async session({ session, token }) {
+      if (token.user) {
+        session.user = token.user as typeof session.user;
+      }
+
+      return session;
+    },
+  },
   providers: [
     Credentials({
       credentials: {
@@ -35,7 +52,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
             const { passwordHash, ...userWithoutPassword } = user;
             return {
               ...userWithoutPassword,
-              id: userWithoutPassword.id.toString(),
+              emailVerified: null,
             };
           }
 

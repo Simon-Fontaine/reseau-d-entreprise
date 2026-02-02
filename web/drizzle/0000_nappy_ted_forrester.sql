@@ -1,68 +1,68 @@
 CREATE TYPE "public"."course_status" AS ENUM('en_cours', 'termine', 'abandonne');--> statement-breakpoint
 CREATE TYPE "public"."user_role" AS ENUM('student', 'trainer', 'admin');--> statement-breakpoint
 CREATE TABLE "chapters" (
-	"id" serial PRIMARY KEY NOT NULL,
-	"course_id" integer,
+	"id" uuid PRIMARY KEY DEFAULT gen_random_uuid() NOT NULL,
+	"course_id" uuid,
 	"title" varchar(200) NOT NULL,
 	"content_markdown" text,
 	"order_index" integer DEFAULT 1
 );
 --> statement-breakpoint
 CREATE TABLE "chat_messages" (
-	"id" serial PRIMARY KEY NOT NULL,
-	"course_id" integer,
-	"user_id" integer,
+	"id" uuid PRIMARY KEY DEFAULT gen_random_uuid() NOT NULL,
+	"course_id" uuid,
+	"user_id" uuid,
 	"message_content" text NOT NULL,
 	"sent_at" timestamp DEFAULT now()
 );
 --> statement-breakpoint
 CREATE TABLE "courses" (
-	"id" serial PRIMARY KEY NOT NULL,
+	"id" uuid PRIMARY KEY DEFAULT gen_random_uuid() NOT NULL,
 	"title" varchar(200) NOT NULL,
 	"level" varchar(20) NOT NULL,
-	"theme_id" integer,
-	"trainer_id" integer
+	"theme_id" uuid,
+	"trainer_id" uuid
 );
 --> statement-breakpoint
 CREATE TABLE "enrollments" (
-	"id" serial PRIMARY KEY NOT NULL,
-	"user_id" integer,
-	"course_id" integer,
+	"id" uuid PRIMARY KEY DEFAULT gen_random_uuid() NOT NULL,
+	"user_id" uuid,
+	"course_id" uuid,
 	"status" "course_status" DEFAULT 'en_cours',
 	"progress_percent" integer DEFAULT 0,
 	CONSTRAINT "enrollments_user_id_course_id_unique" UNIQUE("user_id","course_id")
 );
 --> statement-breakpoint
 CREATE TABLE "quiz_options" (
-	"id" serial PRIMARY KEY NOT NULL,
-	"question_id" integer,
+	"id" uuid PRIMARY KEY DEFAULT gen_random_uuid() NOT NULL,
+	"question_id" uuid,
 	"option_text" varchar(255) NOT NULL,
 	"is_correct" boolean DEFAULT false
 );
 --> statement-breakpoint
 CREATE TABLE "quiz_questions" (
-	"id" serial PRIMARY KEY NOT NULL,
-	"chapter_id" integer,
+	"id" uuid PRIMARY KEY DEFAULT gen_random_uuid() NOT NULL,
+	"chapter_id" uuid,
 	"question_text" text NOT NULL,
 	"points" integer DEFAULT 1
 );
 --> statement-breakpoint
 CREATE TABLE "themes" (
-	"id" serial PRIMARY KEY NOT NULL,
+	"id" uuid PRIMARY KEY DEFAULT gen_random_uuid() NOT NULL,
 	"name" varchar(50) NOT NULL,
 	CONSTRAINT "themes_name_unique" UNIQUE("name")
 );
 --> statement-breakpoint
 CREATE TABLE "user_quiz_attempts" (
-	"id" serial PRIMARY KEY NOT NULL,
-	"user_id" integer,
-	"chapter_id" integer,
+	"id" uuid PRIMARY KEY DEFAULT gen_random_uuid() NOT NULL,
+	"user_id" uuid,
+	"chapter_id" uuid,
 	"score_obtained" integer,
 	"passed" boolean DEFAULT false
 );
 --> statement-breakpoint
 CREATE TABLE "users" (
-	"id" serial PRIMARY KEY NOT NULL,
+	"id" uuid PRIMARY KEY DEFAULT gen_random_uuid() NOT NULL,
 	"full_name" varchar(100) NOT NULL,
 	"email" varchar(150) NOT NULL,
 	"password_hash" varchar(255) NOT NULL,
