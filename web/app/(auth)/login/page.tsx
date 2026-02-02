@@ -24,6 +24,7 @@ import {
   FieldLabel,
 } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
+import { APP_CONFIG, APP_LOGO } from "@/config";
 import { loginSchema } from "@/validations/auth";
 
 export default function LoginPage() {
@@ -65,11 +66,9 @@ export default function LoginPage() {
   return (
     <div className="flex flex-1 flex-col items-center justify-center bg-muted/30 px-4 py-8 sm:px-6 md:px-10">
       <div className="flex w-full max-w-md flex-col gap-6">
-        <Link
-          href="/"
-          className="flex items-center justify-center gap-2 text-xl font-bold"
-        >
-          Advanced Yapping Academy
+        <Link href="/" className="flex items-center justify-center gap-2">
+          <APP_LOGO className="size-6 text-primary" />
+          <span className="text-xl font-bold">{APP_CONFIG.APP_NAME}</span>
         </Link>
         <Card>
           <CardHeader className="text-center">
