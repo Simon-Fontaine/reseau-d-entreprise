@@ -1,7 +1,18 @@
+import {
+  Container,
+  Page,
+  PageHeader,
+  PageHeaderHeading,
+} from "@/components/layouts/page";
+
 export default function TeachersPage() {
   return (
-    <div>
-      <h1>Welcome to the Teachers Page</h1>
-    </div>
+    <Page>
+      <PageHeader>
+        <Container>
+          <PageHeaderHeading>Welcome to the Teachers Page</PageHeaderHeading>
+        </Container>
+      </PageHeader>
+    </Page>
   );
 }

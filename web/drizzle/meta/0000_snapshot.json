@@ -1,5 +1,5 @@
 {
-  "id": "9dd5f31b-795a-467e-a281-c4504ce03bbe",
+  "id": "f3b17fd0-d115-4d80-94ff-70bb2a8d0f07",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
@@ -47,8 +47,12 @@
           "name": "chapters_course_id_courses_id_fk",
           "tableFrom": "chapters",
           "tableTo": "courses",
-          "columnsFrom": ["course_id"],
-          "columnsTo": ["id"],
+          "columnsFrom": [
+            "course_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
           "onDelete": "no action",
           "onUpdate": "no action"
         }
@@ -102,8 +106,12 @@
           "name": "chat_messages_course_id_courses_id_fk",
           "tableFrom": "chat_messages",
           "tableTo": "courses",
-          "columnsFrom": ["course_id"],
-          "columnsTo": ["id"],
+          "columnsFrom": [
+            "course_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
           "onDelete": "no action",
           "onUpdate": "no action"
         },
@@ -111,8 +119,12 @@
           "name": "chat_messages_user_id_users_id_fk",
           "tableFrom": "chat_messages",
           "tableTo": "users",
-          "columnsFrom": ["user_id"],
-          "columnsTo": ["id"],
+          "columnsFrom": [
+            "user_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
           "onDelete": "no action",
           "onUpdate": "no action"
         }
@@ -165,8 +177,12 @@
           "name": "courses_theme_id_themes_id_fk",
           "tableFrom": "courses",
           "tableTo": "themes",
-          "columnsFrom": ["theme_id"],
-          "columnsTo": ["id"],
+          "columnsFrom": [
+            "theme_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
           "onDelete": "no action",
           "onUpdate": "no action"
         },
@@ -174,8 +190,12 @@
           "name": "courses_trainer_id_users_id_fk",
           "tableFrom": "courses",
           "tableTo": "users",
-          "columnsFrom": ["trainer_id"],
-          "columnsTo": ["id"],
+          "columnsFrom": [
+            "trainer_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
           "onDelete": "no action",
           "onUpdate": "no action"
         }
@@ -231,8 +251,12 @@
           "name": "enrollments_user_id_users_id_fk",
           "tableFrom": "enrollments",
           "tableTo": "users",
-          "columnsFrom": ["user_id"],
-          "columnsTo": ["id"],
+          "columnsFrom": [
+            "user_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
           "onDelete": "no action",
           "onUpdate": "no action"
         },
@@ -240,8 +264,12 @@
           "name": "enrollments_course_id_courses_id_fk",
           "tableFrom": "enrollments",
           "tableTo": "courses",
-          "columnsFrom": ["course_id"],
-          "columnsTo": ["id"],
+          "columnsFrom": [
+            "course_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
           "onDelete": "no action",
           "onUpdate": "no action"
         }
@@ -251,7 +279,10 @@
         "enrollments_user_id_course_id_unique": {
           "name": "enrollments_user_id_course_id_unique",
           "nullsNotDistinct": false,
-          "columns": ["user_id", "course_id"]
+          "columns": [
+            "user_id",
+            "course_id"
+          ]
         }
       },
       "policies": {},
@@ -295,8 +326,12 @@
           "name": "quiz_options_question_id_quiz_questions_id_fk",
           "tableFrom": "quiz_options",
           "tableTo": "quiz_questions",
-          "columnsFrom": ["question_id"],
-          "columnsTo": ["id"],
+          "columnsFrom": [
+            "question_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
           "onDelete": "no action",
           "onUpdate": "no action"
         }
@@ -344,8 +379,12 @@
           "name": "quiz_questions_chapter_id_chapters_id_fk",
           "tableFrom": "quiz_questions",
           "tableTo": "chapters",
-          "columnsFrom": ["chapter_id"],
-          "columnsTo": ["id"],
+          "columnsFrom": [
+            "chapter_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
           "onDelete": "no action",
           "onUpdate": "no action"
         }
@@ -381,7 +420,9 @@
         "themes_name_unique": {
           "name": "themes_name_unique",
           "nullsNotDistinct": false,
-          "columns": ["name"]
+          "columns": [
+            "name"
+          ]
         }
       },
       "policies": {},
@@ -431,8 +472,12 @@
           "name": "user_quiz_attempts_user_id_users_id_fk",
           "tableFrom": "user_quiz_attempts",
           "tableTo": "users",
-          "columnsFrom": ["user_id"],
-          "columnsTo": ["id"],
+          "columnsFrom": [
+            "user_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
           "onDelete": "no action",
           "onUpdate": "no action"
         },
@@ -440,8 +485,12 @@
           "name": "user_quiz_attempts_chapter_id_chapters_id_fk",
           "tableFrom": "user_quiz_attempts",
           "tableTo": "chapters",
-          "columnsFrom": ["chapter_id"],
-          "columnsTo": ["id"],
+          "columnsFrom": [
+            "chapter_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
           "onDelete": "no action",
           "onUpdate": "no action"
         }
@@ -497,7 +546,9 @@
         "users_email_unique": {
           "name": "users_email_unique",
           "nullsNotDistinct": false,
-          "columns": ["email"]
+          "columns": [
+            "email"
+          ]
         }
       },
       "policies": {},
@@ -509,12 +560,20 @@
     "public.course_status": {
       "name": "course_status",
       "schema": "public",
-      "values": ["en_cours", "termine", "abandonne"]
+      "values": [
+        "en_cours",
+        "termine",
+        "abandonne"
+      ]
     },
     "public.user_role": {
       "name": "user_role",
       "schema": "public",
-      "values": ["student", "trainer", "admin"]
+      "values": [
+        "student",
+        "trainer",
+        "admin"
+      ]
     }
   },
   "schemas": {},

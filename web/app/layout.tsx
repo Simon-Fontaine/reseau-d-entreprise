@@ -48,7 +48,7 @@ export default async function RootLayout({
             <div className="relative flex min-h-svh flex-col bg-background">
               {children}
             </div>
-            <Toaster />
+            <Toaster richColors />
           </ThemeProvider>
         </AuthProvider>
       </body>

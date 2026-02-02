@@ -1,10 +1,11 @@
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
+import { Loader2 } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { signIn } from "next-auth/react";
-import { useRef } from "react";
+import { signIn, useSession } from "next-auth/react";
+import { useEffect, useRef } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { toast } from "sonner";
 import type { z } from "zod";
@@ -24,12 +25,20 @@ import {
   FieldLabel,
 } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
+import { PasswordInput } from "@/components/ui/password-input";
 import { APP_CONFIG, APP_LOGO } from "@/config";
 import { registerSchema } from "@/validations/auth";
 
 export default function RegisterPage() {
   const router = useRouter();
+  const { status } = useSession();
   const toastIdRef = useRef<string | number | undefined>(undefined);
+
+  useEffect(() => {
+    if (status === "authenticated") {
+      router.push("/dashboard");
+    }
+  }, [status, router]);
 
   const form = useForm<z.infer<typeof registerSchema>>({
     resolver: zodResolver(registerSchema),
@@ -41,6 +50,7 @@ export default function RegisterPage() {
       confirmPassword: "",
     },
   });
+  const { isSubmitting } = form.formState;
 
   async function onSubmit(data: z.infer<typeof registerSchema>) {
     toastIdRef.current = toast.loading("Signing up...");
@@ -90,13 +100,13 @@ export default function RegisterPage() {
   }
 
   return (
-    <div className="flex flex-1 flex-col items-center justify-center bg-muted/30 px-4 py-8 sm:px-6 md:px-10">
-      <div className="flex w-full max-w-md flex-col gap-6">
+    <div className="bg-muted/50 flex flex-1 flex-col items-center justify-center px-4 py-8 sm:px-6 md:px-10">
+      <div className="flex w-full max-w-[400px] flex-col gap-6">
         <Link href="/" className="flex items-center justify-center gap-2">
-          <APP_LOGO className="size-6 text-primary" />
+          <APP_LOGO className="size-8 text-primary" />
           <span className="text-xl font-bold">{APP_CONFIG.APP_NAME}</span>
         </Link>
-        <Card>
+        <Card className="bg-background">
           <CardHeader className="text-center">
             <CardTitle className="text-xl">Create an account</CardTitle>
             <CardDescription>Enter your details to get started</CardDescription>
@@ -116,7 +126,7 @@ export default function RegisterPage() {
                         {...field}
                         id="form-register-email"
                         aria-invalid={fieldState.invalid}
-                        placeholder="you@example.com"
+                        placeholder="name@example.com"
                         autoComplete="email"
                       />
                       {fieldState.invalid && (
@@ -154,13 +164,12 @@ export default function RegisterPage() {
                       <FieldLabel htmlFor="form-register-password">
                         Password
                       </FieldLabel>
-                      <Input
+                      <PasswordInput
                         {...field}
                         id="form-register-password"
-                        type="password"
                         aria-invalid={fieldState.invalid}
-                        placeholder="Enter your password"
-                        autoComplete="current-password"
+                        placeholder="Create a password"
+                        autoComplete="new-password"
                       />
                       {fieldState.invalid && (
                         <FieldError errors={[fieldState.error]} />
@@ -176,13 +185,12 @@ export default function RegisterPage() {
                       <FieldLabel htmlFor="form-register-confirm-password">
                         Confirm Password
                       </FieldLabel>
-                      <Input
+                      <PasswordInput
                         {...field}
                         id="form-register-confirm-password"
-                        type="password"
                         aria-invalid={fieldState.invalid}
-                        placeholder="Re-enter your password"
-                        autoComplete="current-password"
+                        placeholder="Confirm your password"
+                        autoComplete="new-password"
                       />
                       {fieldState.invalid && (
                         <FieldError errors={[fieldState.error]} />
@@ -194,20 +202,27 @@ export default function RegisterPage() {
             </form>
           </CardContent>
           <CardFooter>
-            <Field orientation="vertical">
+            <Field orientation="vertical" className="w-full">
               <Button
-                type="button"
-                variant="outline"
-                onClick={() => form.reset()}
+                type="submit"
+                form="form-register"
+                disabled={isSubmitting}
+                className="w-full"
               >
-                Reset
-              </Button>
-              <Button type="submit" form="form-register">
+                {isSubmitting && (
+                  <Loader2 className="mr-2 size-4 animate-spin" />
+                )}
                 Sign up
               </Button>
-              <Button variant="link" asChild>
-                <Link href="/login">Already have an account? Sign in</Link>
-              </Button>
+              <div className="text-center text-sm text-muted-foreground">
+                Already have an account?{" "}
+                <Link
+                  href="/login"
+                  className="font-medium text-foreground underline-offset-4 hover:underline"
+                >
+                  Sign in
+                </Link>
+              </div>
             </Field>
           </CardFooter>
         </Card>

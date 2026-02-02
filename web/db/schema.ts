@@ -124,6 +124,17 @@ export const quizQuestionsRelations = relations(
   }),
 );
 
+export const enrollmentsRelations = relations(enrollments, ({ one }) => ({
+  user: one(users, {
+    fields: [enrollments.userId],
+    references: [users.id],
+  }),
+  course: one(courses, {
+    fields: [enrollments.courseId],
+    references: [courses.id],
+  }),
+}));
+
 export const db = drizzle(process.env.DATABASE_URL || "", {
   schema: {
     users,
@@ -135,5 +146,9 @@ export const db = drizzle(process.env.DATABASE_URL || "", {
     quizQuestions,
     quizOptions,
     userQuizAttempts,
+    coursesRelations,
+    chaptersRelations,
+    quizQuestionsRelations,
+    enrollmentsRelations,
   },
 });

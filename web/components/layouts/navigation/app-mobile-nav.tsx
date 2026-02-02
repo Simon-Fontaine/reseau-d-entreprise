@@ -2,6 +2,7 @@
 
 import { ExternalLinkIcon, MenuIcon } from "lucide-react";
 import Link from "next/link";
+import { useSession } from "next-auth/react";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import {
@@ -16,19 +17,20 @@ import { APP_CONFIG, APP_LOGO, APP_NAVIGATION } from "@/config";
 
 export function AppMobileNav() {
   const [isOpen, setIsOpen] = useState(false);
+  const { data: session } = useSession();
 
   return (
     <Drawer open={isOpen} onOpenChange={setIsOpen}>
       <DrawerTrigger asChild>
         <Button
           variant="ghost"
-          className="-ml-2 mr-2 h-8 w-8 px-0 text-base hover:bg-transparent focus-visible:bg-transparent focus-visible:ring-0 focus-visible:ring-offset-0 md:hidden"
+          className="mr-2 h-8 w-8 px-0 text-base hover:bg-transparent focus-visible:bg-transparent focus-visible:ring-0 focus-visible:ring-offset-0 md:hidden"
         >
           <MenuIcon />
           <span className="sr-only">Toggle Navigation Menu</span>
         </Button>
       </DrawerTrigger>
-      <DrawerContent className="max-h-[60svh] p-0">
+      <DrawerContent className="max-h-[60svh] bg-muted/50 p-0 shadow-md backdrop-blur-md">
         <DrawerHeader className="sr-only">
           <DrawerTitle>Navigation Menu</DrawerTitle>
           <DrawerDescription>Site navigation links</DrawerDescription>
@@ -43,6 +45,17 @@ export function AppMobileNav() {
               <APP_LOGO className="size-6 text-primary" />
               {APP_CONFIG.APP_NAME}
             </Link>
+            {session?.user ? (
+              <Link
+                href="/dashboard"
+                onClick={() => setIsOpen(false)}
+                className="text-base font-medium"
+              >
+                <div className="flex items-center gap-1">
+                  <span>Dashboard</span>
+                </div>
+              </Link>
+            ) : null}
             {APP_NAVIGATION.map((item) =>
               item.href && !item.disabled ? (
                 <Link

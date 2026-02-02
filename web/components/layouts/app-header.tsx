@@ -5,12 +5,15 @@ import { AppMobileNav } from "./navigation/app-mobile-nav";
 
 export function AppHeader() {
   return (
-    <header className="sticky top-0 z-50 w-full border-b border-border bg-background/95 backdrop-blur-sm supports-backdrop-filter:bg-background/60">
-      <div className="mx-auto flex h-14 max-w-screen-2xl items-center px-4 sm:px-6 lg:px-8">
-        <AppDesktopNav />
-        <AppMobileNav />
-        <div className="flex flex-1 items-center justify-end space-x-2">
-          <nav className="flex items-center gap-0.5">
+    <header className="sticky top-0 z-50 w-full px-4 pt-4 md:px-4 md:pt-6">
+      <div className="mx-auto flex h-16 max-w-5xl items-center justify-between rounded-full border border-border bg-muted/50 px-4 shadow-md backdrop-blur-md md:px-6">
+        <div className="flex items-center gap-6">
+          <AppDesktopNav />
+          <AppMobileNav />
+        </div>
+
+        <div className="flex items-center gap-2">
+          <nav className="flex items-center gap-2">
             <ThemeSwitcher />
             <AuthButton />
           </nav>

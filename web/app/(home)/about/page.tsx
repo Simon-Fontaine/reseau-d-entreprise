@@ -1,7 +1,18 @@
+import {
+  Container,
+  Page,
+  PageHeader,
+  PageHeaderHeading,
+} from "@/components/layouts/page";
+
 export default function AboutPage() {
   return (
-    <div>
-      <h1>Welcome to the About Page</h1>
-    </div>
+    <Page>
+      <PageHeader>
+        <Container>
+          <PageHeaderHeading>Welcome to the About Page</PageHeaderHeading>
+        </Container>
+      </PageHeader>
+    </Page>
   );
 }
