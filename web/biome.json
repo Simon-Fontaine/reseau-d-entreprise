@@ -10,37 +10,12 @@
   },
   "formatter": {
     "enabled": true,
-    "indentStyle": "space",
-    "indentWidth": 2
+    "indentStyle": "space"
   },
   "linter": {
     "enabled": true,
     "rules": {
-      "recommended": true,
-      "performance": {
-        "noImgElement": "warn"
-      },
-      "style": {
-        "noCommonJs": "error"
-      },
-      "suspicious": {
-        "noExplicitAny": "warn",
-        "noDocumentImportInPage": "off",
-        "noHeadImportInDocument": "off"
-      }
-    },
-    "includes": [
-      "**",
-      "!**/.next/**",
-      "!**/out/**",
-      "!**/build/**",
-      "!**/node_modules/**",
-      "!next-env.d.ts"
-    ]
-  },
-  "css": {
-    "parser": {
-      "tailwindDirectives": true
+      "recommended": true
     }
   },
   "javascript": {
@@ -48,46 +23,11 @@
       "quoteStyle": "double"
     }
   },
-  "json": {
+  "css": {
     "parser": {
-      "allowComments": true
-    },
-    "formatter": {
-      "enabled": true
+      "tailwindDirectives": true
     }
   },
-  "overrides": [
-    {
-      "includes": ["**/*.{js,jsx,ts,tsx,mjs,mts,cts}"],
-      "javascript": {
-        "globals": [
-          "window",
-          "document",
-          "navigator",
-          "localStorage",
-          "sessionStorage",
-          "fetch",
-          "Headers",
-          "Request",
-          "Response",
-          "URL",
-          "FormData",
-          "Blob",
-          "process"
-        ]
-      }
-    },
-    {
-      "includes": ["**/*.ts", "**/*.tsx"],
-      "linter": {
-        "rules": {
-          "style": {
-            "useConst": "error"
-          }
-        }
-      }
-    }
-  ],
   "assist": {
     "enabled": true,
     "actions": {
