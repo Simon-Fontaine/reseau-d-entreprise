@@ -9,6 +9,7 @@ import { useEffect, useRef } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { toast } from "sonner";
 import type { z } from "zod";
+import { registerAction } from "@/actions/auth";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -56,34 +57,34 @@ export default function RegisterPage() {
     toastIdRef.current = toast.loading("Signing up...");
 
     try {
-      const response = await fetch("/api/auth/register", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          fullName: data.fullName,
-          email: data.email,
-          password: data.password,
-          confirmPassword: data.confirmPassword,
-        }),
-      });
+      const result = await registerAction(null, data);
 
-      if (!response.ok) {
-        const payload = await response.json().catch(() => null);
-        toast.error(payload?.message ?? "Registration failed", {
-          id: toastIdRef.current,
-        });
+      if (!result.success) {
+        if (result.errors) {
+          for (const [field, messages] of Object.entries(result.errors)) {
+            form.setError(field as keyof z.infer<typeof registerSchema>, {
+              message: messages[0],
+            });
+          }
+          toast.dismiss(toastIdRef.current);
+        } else if (result.message === "Email already in use") {
+          form.setError("email", { message: result.message });
+          toast.dismiss(toastIdRef.current);
+        } else {
+          toast.error(result.message ?? "Registration failed", {
+            id: toastIdRef.current,
+          });
+        }
         return;
       }
 
-      const result = await signIn("credentials", {
+      const signInResult = await signIn("credentials", {
         email: data.email,
         password: data.password,
         redirect: false,
       });
 
-      if (result.error) {
+      if (signInResult?.error) {
         toast.error("Account created, but sign-in failed", {
           id: toastIdRef.current,
         });

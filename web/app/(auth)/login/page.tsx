@@ -60,9 +60,10 @@ export default function LoginPage() {
         redirect: false,
       });
 
-      if (result.error) {
-        toast.error("Invalid email or password", { id: toastIdRef.current });
-      } else if (result.ok) {
+      if (result?.error) {
+        form.setError("root", { message: "Invalid email or password" });
+        toast.dismiss(toastIdRef.current);
+      } else if (result?.ok) {
         toast.success("Signed in successfully!", { id: toastIdRef.current });
         router.push("/dashboard");
       }
@@ -131,6 +132,11 @@ export default function LoginPage() {
                   )}
                 />
               </FieldGroup>
+              {form.formState.errors.root && (
+                <div className="mt-2">
+                  <FieldError errors={[form.formState.errors.root]} />
+                </div>
+              )}
             </form>
           </CardContent>
           <CardFooter>
