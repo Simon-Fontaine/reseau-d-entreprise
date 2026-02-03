@@ -12,6 +12,7 @@ import {
   PageHeaderDescription,
   PageHeaderHeading,
 } from "@/components/layouts/page";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -202,29 +203,41 @@ export default async function CoursePage({ params }: CoursePageProps) {
           </Card>
 
           {course.tutor && (
-            <Card>
-              <CardHeader>
-                <CardTitle>Tutor</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-full bg-muted flex items-center justify-center font-bold">
-                    {course.tutor.fullName.charAt(0)}
-                  </div>
-                  <div>
-                    <div className="font-semibold">{course.tutor.fullName}</div>
-                    <div className="text-xs text-muted-foreground">
-                      Instructor
+            <Link href={`/tutors/${course.tutor.id}`} className="group block">
+              <Card className="cursor-pointer transition-shadow hover:shadow-md">
+                <CardContent>
+                  <div className="flex items-center gap-3">
+                    <Avatar className="size-10">
+                      <AvatarImage
+                        src={`https://api.dicebear.com/9.x/avataaars/png?seed=${encodeURIComponent(
+                          course.tutor.fullName,
+                        )}`}
+                        alt={`Avatar of ${course.tutor.fullName}`}
+                      />
+                      <AvatarFallback>
+                        {course.tutor.fullName
+                          .split(" ")
+                          .map((part) => part[0])
+                          .join("")}
+                      </AvatarFallback>
+                    </Avatar>
+                    <div>
+                      <div className="font-semibold">
+                        {course.tutor.fullName}
+                      </div>
+                      <div className="text-xs text-muted-foreground">
+                        Instructor
+                      </div>
                     </div>
                   </div>
-                </div>
-                {course.tutor.bio && (
-                  <p className="text-sm text-muted-foreground mt-3">
-                    {course.tutor.bio}
-                  </p>
-                )}
-              </CardContent>
-            </Card>
+                  {course.tutor.bio && (
+                    <p className="text-sm text-muted-foreground mt-3">
+                      {course.tutor.bio}
+                    </p>
+                  )}
+                </CardContent>
+              </Card>
+            </Link>
           )}
         </div>
       </Container>

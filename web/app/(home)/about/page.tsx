@@ -16,67 +16,67 @@ import {
 const teamMembers = [
   {
     name: "Hippolyte",
-    role: "Team Member",
+    role: "Report Manager",
     avatar: "https://api.dicebear.com/9.x/avataaars/png?seed=Hippolyte",
   },
   {
     name: "Thibault",
-    role: "Team Member",
+    role: "Time & Task Manager",
     avatar: "https://api.dicebear.com/9.x/avataaars/png?seed=Thibault",
   },
   {
     name: "Simon",
-    role: "Team Member",
+    role: "Web Services Manager",
     avatar: "https://api.dicebear.com/9.x/avataaars/png?seed=Simon",
   },
   {
     name: "Thomas",
-    role: "Team Member",
+    role: "Project Coordinator",
     avatar: "https://api.dicebear.com/9.x/avataaars/png?seed=Thomas",
   },
   {
     name: "Pierre-Alexandre",
-    role: "Team Member",
+    role: "IT Resources Manager",
     avatar: "https://api.dicebear.com/9.x/avataaars/png?seed=Pierre-Alexandre",
   },
   {
     name: "Guillaume",
-    role: "Team Member",
+    role: "Security Manager",
     avatar: "https://api.dicebear.com/9.x/avataaars/png?seed=Guillaume",
   },
   {
     name: "Théo",
-    role: "Team Member",
+    role: "Report Manager",
     avatar: "https://api.dicebear.com/9.x/avataaars/png?seed=Theo",
   },
   {
     name: "Akbar",
-    role: "Team Member",
+    role: "Monitoring Manager",
     avatar: "https://api.dicebear.com/9.x/avataaars/png?seed=Akbar",
   },
   {
     name: "Bastien",
-    role: "Team Member",
+    role: "Web Services Manager",
     avatar: "https://api.dicebear.com/9.x/avataaars/png?seed=Bastien",
   },
   {
     name: "Thomas",
-    role: "Team Member",
+    role: "Inter-group Communication Manager",
     avatar: "https://api.dicebear.com/9.x/avataaars/png?seed=Thomas-2",
   },
   {
     name: "Arnaud",
-    role: "Team Member",
+    role: "Infrastructure Manager",
     avatar: "https://api.dicebear.com/9.x/avataaars/png?seed=Arnaud",
   },
   {
     name: "Denis",
-    role: "Team Member",
+    role: "Infrastructure Manager",
     avatar: "https://api.dicebear.com/9.x/avataaars/png?seed=Denis",
   },
   {
     name: "Tristan",
-    role: "Team Member",
+    role: "Photo & Documentation Manager",
     avatar: "https://api.dicebear.com/9.x/avataaars/png?seed=Tristan",
   },
 ];

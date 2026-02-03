@@ -57,7 +57,7 @@ export const courses = pgTable("courses", {
   minLevel: courseLevelEnum("min_level").notNull(),
   maxLevel: courseLevelEnum("max_level").notNull(),
   themeId: uuid("theme_id").references(() => themes.id),
-  tutorId: uuid("tutor_id").references(() => users.id),
+  tutorId: uuid("tutor_id").references(() => users.id, { onDelete: "cascade" }),
   description: text("description"),
   imageUrl: varchar("image_url", { length: 255 }),
   estimatedDuration: integer("estimated_duration"),
@@ -71,7 +71,9 @@ export const courses = pgTable("courses", {
 
 export const chapters = pgTable("chapters", {
   id: uuid("id").defaultRandom().primaryKey(),
-  courseId: uuid("course_id").references(() => courses.id),
+  courseId: uuid("course_id").references(() => courses.id, {
+    onDelete: "cascade",
+  }),
   title: varchar("title", { length: 200 }).notNull(),
   contentMarkdown: text("content_markdown"),
   orderIndex: integer("order_index").default(1),
@@ -81,8 +83,10 @@ export const enrollments = pgTable(
   "enrollments",
   {
     id: uuid("id").defaultRandom().primaryKey(),
-    userId: uuid("user_id").references(() => users.id),
-    courseId: uuid("course_id").references(() => courses.id),
+    userId: uuid("user_id").references(() => users.id, { onDelete: "cascade" }),
+    courseId: uuid("course_id").references(() => courses.id, {
+      onDelete: "cascade",
+    }),
     status: courseStatusEnum("status").default("in_progress"),
   },
   (t) => [unique("enrollments_user_course_uniq").on(t.userId, t.courseId)],
@@ -90,30 +94,38 @@ export const enrollments = pgTable(
 
 export const chatMessages = pgTable("chat_messages", {
   id: uuid("id").defaultRandom().primaryKey(),
-  courseId: uuid("course_id").references(() => courses.id),
-  userId: uuid("user_id").references(() => users.id),
+  courseId: uuid("course_id").references(() => courses.id, {
+    onDelete: "cascade",
+  }),
+  userId: uuid("user_id").references(() => users.id, { onDelete: "cascade" }),
   messageContent: text("message_content").notNull(),
   sentAt: timestamp("sent_at").defaultNow(),
 });
 
 export const quizQuestions = pgTable("quiz_questions", {
   id: uuid("id").defaultRandom().primaryKey(),
-  chapterId: uuid("chapter_id").references(() => chapters.id),
+  chapterId: uuid("chapter_id").references(() => chapters.id, {
+    onDelete: "cascade",
+  }),
   questionText: text("question_text").notNull(),
   points: integer("points").default(1),
 });
 
 export const quizOptions = pgTable("quiz_options", {
   id: uuid("id").defaultRandom().primaryKey(),
-  questionId: uuid("question_id").references(() => quizQuestions.id),
+  questionId: uuid("question_id").references(() => quizQuestions.id, {
+    onDelete: "cascade",
+  }),
   optionText: varchar("option_text", { length: 255 }).notNull(),
   isCorrect: boolean("is_correct").default(false),
 });
 
 export const userQuizAttempts = pgTable("user_quiz_attempts", {
   id: uuid("id").defaultRandom().primaryKey(),
-  userId: uuid("user_id").references(() => users.id),
-  chapterId: uuid("chapter_id").references(() => chapters.id),
+  userId: uuid("user_id").references(() => users.id, { onDelete: "cascade" }),
+  chapterId: uuid("chapter_id").references(() => chapters.id, {
+    onDelete: "cascade",
+  }),
   scoreObtained: integer("score_obtained"),
   passed: boolean("passed").default(false),
 });
@@ -122,8 +134,10 @@ export const chapterCompletions = pgTable(
   "chapter_completions",
   {
     id: uuid("id").defaultRandom().primaryKey(),
-    userId: uuid("user_id").references(() => users.id),
-    chapterId: uuid("chapter_id").references(() => chapters.id),
+    userId: uuid("user_id").references(() => users.id, { onDelete: "cascade" }),
+    chapterId: uuid("chapter_id").references(() => chapters.id, {
+      onDelete: "cascade",
+    }),
     completedAt: timestamp("completed_at").defaultNow(),
   },
   (t) => [

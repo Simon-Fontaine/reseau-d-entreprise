@@ -22,6 +22,26 @@ export type ActionState = {
   errors?: Record<string, string[]>;
 };
 
+export type QuizResult = {
+  questionId: string;
+  questionText: string;
+  points: number;
+  selectedOptionId: string | null;
+  selectedOptionText: string | null;
+  isCorrect: boolean;
+  correctOptionId: string;
+  correctOptionText: string;
+  explanation?: string;
+};
+
+export type QuizActionState = ActionState & {
+  results?: QuizResult[];
+  score?: number;
+  totalPoints?: number;
+  passed?: boolean;
+  percentage?: number;
+};
+
 async function requireStudent() {
   const session = await auth();
   if (!session?.user?.id || session.user.role !== "student") {
@@ -104,9 +124,9 @@ export async function enrollInCourse(
 }
 
 export async function submitChapterQuiz(
-  _prevState: ActionState | null,
+  _prevState: QuizActionState | null,
   formData: FormData,
-): Promise<ActionState> {
+): Promise<QuizActionState> {
   try {
     const student = await requireStudent();
     const rawData = Object.fromEntries(formData);
@@ -171,26 +191,42 @@ export async function submitChapterQuiz(
 
     let totalPoints = 0;
     let score = 0;
+    const results: QuizResult[] = [];
 
     questions.forEach((question) => {
       const questionPoints = question.points ?? 1;
       totalPoints += questionPoints;
+
       const selectedOptionId = formData.get(`question-${question.id}`) as
         | string
         | null;
-      if (!selectedOptionId) {
-        return;
-      }
       const questionOptions = optionsByQuestion[question.id] ?? [];
-      const selected = questionOptions.find(
-        (option) => option.id === selectedOptionId,
-      );
-      if (selected?.isCorrect) {
+      const selectedOption = selectedOptionId
+        ? questionOptions.find((opt) => opt.id === selectedOptionId)
+        : null;
+      const correctOption = questionOptions.find((opt) => opt.isCorrect);
+
+      const isCorrect = selectedOption?.isCorrect ?? false;
+      if (isCorrect) {
         score += questionPoints;
       }
+
+      results.push({
+        questionId: question.id,
+        questionText: question.questionText,
+        points: questionPoints,
+        selectedOptionId: selectedOptionId,
+        selectedOptionText: selectedOption?.optionText ?? null,
+        isCorrect,
+        correctOptionId: correctOption?.id ?? "",
+        correctOptionText:
+          correctOption?.optionText ?? "No correct answer defined",
+      });
     });
 
     const passed = totalPoints > 0 ? score / totalPoints >= 0.7 : false;
+    const percentage =
+      totalPoints > 0 ? Math.round((score / totalPoints) * 100) : 0;
 
     await db.insert(userQuizAttempts).values({
       userId: student.id,
@@ -202,7 +238,14 @@ export async function submitChapterQuiz(
     revalidatePath(`/dashboard/student/courses/${chapter.courseId}`);
     return {
       success: true,
-      message: passed ? "Quiz passed" : "Quiz submitted",
+      message: passed
+        ? `Great job! You scored ${percentage}% and passed the quiz!`
+        : `You scored ${percentage}%. Keep studying and try again!`,
+      results,
+      score,
+      totalPoints,
+      passed,
+      percentage,
     };
   } catch (error) {
     console.error("Quiz submit error:", error);
