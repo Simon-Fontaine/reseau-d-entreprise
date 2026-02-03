@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 import {
   ADMIN_DASHBOARD_NAVIGATION,
   STUDENT_DASHBOARD_NAVIGATION,
-  TRAINER_DASHBOARD_NAVIGATION,
+  TUTOR_DASHBOARD_NAVIGATION,
 } from "@/config";
 import { cn } from "@/lib/utils";
 import type { SidebarNavItem } from "@/types/nav";
@@ -27,8 +27,8 @@ export function DashboardSidebar({
   let items: SidebarNavItem[] = STUDENT_DASHBOARD_NAVIGATION;
   if (role === "admin") {
     items = ADMIN_DASHBOARD_NAVIGATION;
-  } else if (role === "trainer") {
-    items = TRAINER_DASHBOARD_NAVIGATION;
+  } else if (role === "tutor") {
+    items = TUTOR_DASHBOARD_NAVIGATION;
   }
 
   if (!items?.length) {

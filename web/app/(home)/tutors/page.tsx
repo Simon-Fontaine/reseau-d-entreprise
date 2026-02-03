@@ -5,12 +5,12 @@ import {
   PageHeaderHeading,
 } from "@/components/layouts/page";
 
-export default function TeachersPage() {
+export default function TutorsPage() {
   return (
     <Page>
       <PageHeader>
         <Container>
-          <PageHeaderHeading>Welcome to the Teachers Page</PageHeaderHeading>
+          <PageHeaderHeading>Welcome to the Tutors Page</PageHeaderHeading>
         </Container>
       </PageHeader>
     </Page>

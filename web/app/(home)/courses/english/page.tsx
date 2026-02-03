@@ -83,7 +83,7 @@ const modules = [
   },
 ];
 
-const teachers = [
+const tutors = [
   {
     id: 1,
     name: "Sarah Johnson",
@@ -134,7 +134,7 @@ export default function EnglishCoursePage() {
               <Badge variant="outline">📚 120 lessons</Badge>
             </div>
             <div className="flex items-center gap-2">
-              <Badge variant="outline">👨‍🏫 15 teachers</Badge>
+              <Badge variant="outline">👨‍🏫 15 tutors</Badge>
             </div>
             <div className="flex items-center gap-2">
               <Badge variant="outline">⏱️ 6-12 months</Badge>
@@ -177,30 +177,30 @@ export default function EnglishCoursePage() {
             </div>
           </section>
 
-          {/* Teachers */}
+          {/* Tutors */}
           <section>
-            <h2 className="text-3xl font-bold mb-6">Our Teachers</h2>
+            <h2 className="text-3xl font-bold mb-6">Our Tutors</h2>
             <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-              {teachers.map((teacher) => (
+              {tutors.map((tutor) => (
                 <Card
-                  key={teacher.id}
+                  key={tutor.id}
                   className="hover:shadow-lg transition-shadow"
                 >
                   <CardHeader>
                     <div className="flex items-center gap-3 mb-2">
-                      <span className="text-3xl">{teacher.nationality}</span>
+                      <span className="text-3xl">{tutor.nationality}</span>
                       <div>
                         <CardTitle className="text-base">
-                          {teacher.name}
+                          {tutor.name}
                         </CardTitle>
                       </div>
                     </div>
                     <CardDescription className="space-y-1">
                       <div className="font-medium text-foreground">
-                        {teacher.specialization}
+                        {tutor.specialization}
                       </div>
                       <div className="text-xs">
-                        {teacher.experience} of experience
+                        {tutor.experience} of experience
                       </div>
                     </CardDescription>
                   </CardHeader>

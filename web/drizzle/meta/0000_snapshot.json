@@ -1,5 +1,5 @@
 {
-  "id": "f3b17fd0-d115-4d80-94ff-70bb2a8d0f07",
+  "id": "587c0770-d019-4a91-97f8-4655581ac471",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
@@ -47,8 +47,12 @@
           "name": "chapters_course_id_courses_id_fk",
           "tableFrom": "chapters",
           "tableTo": "courses",
-          "columnsFrom": ["course_id"],
-          "columnsTo": ["id"],
+          "columnsFrom": [
+            "course_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
           "onDelete": "no action",
           "onUpdate": "no action"
         }
@@ -102,8 +106,12 @@
           "name": "chat_messages_course_id_courses_id_fk",
           "tableFrom": "chat_messages",
           "tableTo": "courses",
-          "columnsFrom": ["course_id"],
-          "columnsTo": ["id"],
+          "columnsFrom": [
+            "course_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
           "onDelete": "no action",
           "onUpdate": "no action"
         },
@@ -111,8 +119,12 @@
           "name": "chat_messages_user_id_users_id_fk",
           "tableFrom": "chat_messages",
           "tableTo": "users",
-          "columnsFrom": ["user_id"],
-          "columnsTo": ["id"],
+          "columnsFrom": [
+            "user_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
           "onDelete": "no action",
           "onUpdate": "no action"
         }
@@ -140,9 +152,17 @@
           "primaryKey": false,
           "notNull": true
         },
-        "level": {
-          "name": "level",
-          "type": "varchar(20)",
+        "min_level": {
+          "name": "min_level",
+          "type": "course_level",
+          "typeSchema": "public",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "max_level": {
+          "name": "max_level",
+          "type": "course_level",
+          "typeSchema": "public",
           "primaryKey": false,
           "notNull": true
         },
@@ -152,9 +172,33 @@
           "primaryKey": false,
           "notNull": false
         },
-        "trainer_id": {
-          "name": "trainer_id",
+        "tutor_id": {
+          "name": "tutor_id",
           "type": "uuid",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "description": {
+          "name": "description",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "image_url": {
+          "name": "image_url",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "estimated_duration": {
+          "name": "estimated_duration",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "emoji": {
+          "name": "emoji",
+          "type": "text",
           "primaryKey": false,
           "notNull": false
         }
@@ -165,17 +209,25 @@
           "name": "courses_theme_id_themes_id_fk",
           "tableFrom": "courses",
           "tableTo": "themes",
-          "columnsFrom": ["theme_id"],
-          "columnsTo": ["id"],
+          "columnsFrom": [
+            "theme_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
           "onDelete": "no action",
           "onUpdate": "no action"
         },
-        "courses_trainer_id_users_id_fk": {
-          "name": "courses_trainer_id_users_id_fk",
+        "courses_tutor_id_users_id_fk": {
+          "name": "courses_tutor_id_users_id_fk",
           "tableFrom": "courses",
           "tableTo": "users",
-          "columnsFrom": ["trainer_id"],
-          "columnsTo": ["id"],
+          "columnsFrom": [
+            "tutor_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
           "onDelete": "no action",
           "onUpdate": "no action"
         }
@@ -231,8 +283,12 @@
           "name": "enrollments_user_id_users_id_fk",
           "tableFrom": "enrollments",
           "tableTo": "users",
-          "columnsFrom": ["user_id"],
-          "columnsTo": ["id"],
+          "columnsFrom": [
+            "user_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
           "onDelete": "no action",
           "onUpdate": "no action"
         },
@@ -240,18 +296,25 @@
           "name": "enrollments_course_id_courses_id_fk",
           "tableFrom": "enrollments",
           "tableTo": "courses",
-          "columnsFrom": ["course_id"],
-          "columnsTo": ["id"],
+          "columnsFrom": [
+            "course_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
           "onDelete": "no action",
           "onUpdate": "no action"
         }
       },
       "compositePrimaryKeys": {},
       "uniqueConstraints": {
-        "enrollments_user_id_course_id_unique": {
-          "name": "enrollments_user_id_course_id_unique",
+        "enrollments_user_course_uniq": {
+          "name": "enrollments_user_course_uniq",
           "nullsNotDistinct": false,
-          "columns": ["user_id", "course_id"]
+          "columns": [
+            "user_id",
+            "course_id"
+          ]
         }
       },
       "policies": {},
@@ -295,8 +358,12 @@
           "name": "quiz_options_question_id_quiz_questions_id_fk",
           "tableFrom": "quiz_options",
           "tableTo": "quiz_questions",
-          "columnsFrom": ["question_id"],
-          "columnsTo": ["id"],
+          "columnsFrom": [
+            "question_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
           "onDelete": "no action",
           "onUpdate": "no action"
         }
@@ -344,8 +411,12 @@
           "name": "quiz_questions_chapter_id_chapters_id_fk",
           "tableFrom": "quiz_questions",
           "tableTo": "chapters",
-          "columnsFrom": ["chapter_id"],
-          "columnsTo": ["id"],
+          "columnsFrom": [
+            "chapter_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
           "onDelete": "no action",
           "onUpdate": "no action"
         }
@@ -372,6 +443,12 @@
           "type": "varchar(50)",
           "primaryKey": false,
           "notNull": true
+        },
+        "emoji": {
+          "name": "emoji",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
         }
       },
       "indexes": {},
@@ -381,7 +458,9 @@
         "themes_name_unique": {
           "name": "themes_name_unique",
           "nullsNotDistinct": false,
-          "columns": ["name"]
+          "columns": [
+            "name"
+          ]
         }
       },
       "policies": {},
@@ -431,8 +510,12 @@
           "name": "user_quiz_attempts_user_id_users_id_fk",
           "tableFrom": "user_quiz_attempts",
           "tableTo": "users",
-          "columnsFrom": ["user_id"],
-          "columnsTo": ["id"],
+          "columnsFrom": [
+            "user_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
           "onDelete": "no action",
           "onUpdate": "no action"
         },
@@ -440,8 +523,12 @@
           "name": "user_quiz_attempts_chapter_id_chapters_id_fk",
           "tableFrom": "user_quiz_attempts",
           "tableTo": "chapters",
-          "columnsFrom": ["chapter_id"],
-          "columnsTo": ["id"],
+          "columnsFrom": [
+            "chapter_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
           "onDelete": "no action",
           "onUpdate": "no action"
         }
@@ -488,6 +575,12 @@
           "primaryKey": false,
           "notNull": false,
           "default": "'student'"
+        },
+        "bio": {
+          "name": "bio",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
         }
       },
       "indexes": {},
@@ -497,7 +590,9 @@
         "users_email_unique": {
           "name": "users_email_unique",
           "nullsNotDistinct": false,
-          "columns": ["email"]
+          "columns": [
+            "email"
+          ]
         }
       },
       "policies": {},
@@ -506,15 +601,35 @@
     }
   },
   "enums": {
+    "public.course_level": {
+      "name": "course_level",
+      "schema": "public",
+      "values": [
+        "A1",
+        "A2",
+        "B1",
+        "B2",
+        "C1",
+        "C2"
+      ]
+    },
     "public.course_status": {
       "name": "course_status",
       "schema": "public",
-      "values": ["en_cours", "termine", "abandonne"]
+      "values": [
+        "en_cours",
+        "termine",
+        "abandonne"
+      ]
     },
     "public.user_role": {
       "name": "user_role",
       "schema": "public",
-      "values": ["student", "trainer", "admin"]
+      "values": [
+        "student",
+        "tutor",
+        "admin"
+      ]
     }
   },
   "schemas": {},

@@ -13,15 +13,21 @@ import {
   varchar,
 } from "drizzle-orm/pg-core";
 
-export const userRoleEnum = pgEnum("user_role", [
-  "student",
-  "trainer",
-  "admin",
-]);
+export const userRoleEnum = pgEnum("user_role", ["student", "tutor", "admin"]);
+
 export const courseStatusEnum = pgEnum("course_status", [
   "en_cours",
   "termine",
   "abandonne",
+]);
+
+export const courseLevelEnum = pgEnum("course_level", [
+  "A1",
+  "A2",
+  "B1",
+  "B2",
+  "C1",
+  "C2",
 ]);
 
 export const users = pgTable("users", {
@@ -30,19 +36,26 @@ export const users = pgTable("users", {
   email: varchar("email", { length: 150 }).unique().notNull(),
   passwordHash: varchar("password_hash", { length: 255 }).notNull(),
   role: userRoleEnum("role").default("student"),
+  bio: text("bio"),
 });
 
 export const themes = pgTable("themes", {
   id: uuid("id").defaultRandom().primaryKey(),
   name: varchar("name", { length: 50 }).unique().notNull(),
+  emoji: text("emoji"),
 });
 
 export const courses = pgTable("courses", {
   id: uuid("id").defaultRandom().primaryKey(),
   title: varchar("title", { length: 200 }).notNull(),
-  level: varchar("level", { length: 20 }).notNull(),
+  minLevel: courseLevelEnum("min_level").notNull(),
+  maxLevel: courseLevelEnum("max_level").notNull(),
   themeId: uuid("theme_id").references(() => themes.id),
-  trainerId: uuid("trainer_id").references(() => users.id),
+  tutorId: uuid("tutor_id").references(() => users.id),
+  description: text("description"),
+  imageUrl: varchar("image_url", { length: 255 }),
+  estimatedDuration: integer("estimated_duration"),
+  emoji: text("emoji"),
 });
 
 export const chapters = pgTable("chapters", {
@@ -96,7 +109,7 @@ export const userQuizAttempts = pgTable("user_quiz_attempts", {
 });
 
 export const coursesRelations = relations(courses, ({ one, many }) => ({
-  trainer: one(users, { fields: [courses.trainerId], references: [users.id] }),
+  tutor: one(users, { fields: [courses.tutorId], references: [users.id] }),
   theme: one(themes, { fields: [courses.themeId], references: [themes.id] }),
   chapters: many(chapters),
   enrollments: many(enrollments),

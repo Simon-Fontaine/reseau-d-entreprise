@@ -34,8 +34,8 @@ export const APP_NAVIGATION = [
     external: false,
   },
   {
-    title: "Teachers",
-    href: "/teachers",
+    title: "Tutors",
+    href: "/tutors",
     disabled: false,
     external: false,
   },
@@ -83,22 +83,22 @@ export const STUDENT_DASHBOARD_NAVIGATION = [
   },
 ] as SidebarNavItem[];
 
-export const TRAINER_DASHBOARD_NAVIGATION = [
+export const TUTOR_DASHBOARD_NAVIGATION = [
   {
     title: "Overview",
-    href: "/dashboard/trainer",
+    href: "/dashboard/tutor",
     icon: BarChart,
     items: [],
   },
   {
     title: "Manage Courses",
-    href: "/dashboard/trainer/courses",
+    href: "/dashboard/tutor/courses",
     icon: GraduationCapIcon,
     items: [],
   },
   {
     title: "Messages",
-    href: "/dashboard/trainer/messages",
+    href: "/dashboard/tutor/messages",
     icon: MessageSquare,
     items: [],
   },

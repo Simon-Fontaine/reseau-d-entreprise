@@ -24,7 +24,7 @@ const courses = [
       "Learn English, the most widely spoken international language in the world",
     level: "Beginner to Advanced",
     lessons: 120,
-    teachers: 15,
+    tutors: 15,
     flag: "🇬🇧",
   },
   {
@@ -35,7 +35,7 @@ const courses = [
       "Master the language of Molière and discover Francophone culture",
     level: "Beginner to Advanced",
     lessons: 95,
-    teachers: 12,
+    tutors: 12,
     flag: "🇫🇷",
   },
   {
@@ -45,7 +45,7 @@ const courses = [
     description: "Discover the German language and the richness of its culture",
     level: "Beginner to Intermediate",
     lessons: 80,
-    teachers: 8,
+    tutors: 8,
     flag: "🇩🇪",
   },
   {
@@ -55,7 +55,7 @@ const courses = [
     description: "Learn Spanish and explore Hispanic culture",
     level: "Beginner to Advanced",
     lessons: 110,
-    teachers: 14,
+    tutors: 14,
     flag: "🇪🇸",
   },
   {
@@ -65,7 +65,7 @@ const courses = [
     description: "Dive into the Italian language and its fascinating culture",
     level: "Beginner to Intermediate",
     lessons: 75,
-    teachers: 7,
+    tutors: 7,
     flag: "🇮🇹",
   },
   {
@@ -75,7 +75,7 @@ const courses = [
     description: "Discover Portuguese and Lusophone and Brazilian cultures",
     level: "Beginner to Intermediate",
     lessons: 70,
-    teachers: 6,
+    tutors: 6,
     flag: "🇵🇹",
   },
   {
@@ -85,7 +85,7 @@ const courses = [
     description: "Learn Mandarin and ancient Chinese culture",
     level: "Beginner",
     lessons: 90,
-    teachers: 10,
+    tutors: 10,
     flag: "🇨🇳",
   },
   {
@@ -95,7 +95,7 @@ const courses = [
     description: "Learn Japanese and immerse yourself in Japanese culture",
     level: "Beginner to Intermediate",
     lessons: 85,
-    teachers: 9,
+    tutors: 9,
     flag: "🇯🇵",
   },
   {
@@ -105,7 +105,7 @@ const courses = [
     description: "Discover Korean and modern K-culture",
     level: "Beginner",
     lessons: 65,
-    teachers: 8,
+    tutors: 8,
     flag: "🇰🇷",
   },
   {
@@ -115,7 +115,7 @@ const courses = [
     description: "Learn Arabic and explore the richness of Arab culture",
     level: "Beginner",
     lessons: 70,
-    teachers: 6,
+    tutors: 6,
     flag: "🇸🇦",
   },
   {
@@ -125,7 +125,7 @@ const courses = [
     description: "Master Russian and discover Slavic culture",
     level: "Beginner to Intermediate",
     lessons: 75,
-    teachers: 7,
+    tutors: 7,
     flag: "🇷🇺",
   },
   {
@@ -135,7 +135,7 @@ const courses = [
     description: "Learn Dutch and the culture of the Netherlands",
     level: "Beginner",
     lessons: 55,
-    teachers: 5,
+    tutors: 5,
     flag: "🇳🇱",
   },
   {
@@ -145,7 +145,7 @@ const courses = [
     description: "Discover Esperanto, the international auxiliary language",
     level: "Beginner",
     lessons: 30,
-    teachers: 2,
+    tutors: 2,
     flag: "🟢",
   },
   {
@@ -155,7 +155,7 @@ const courses = [
     description: "Learn Santali, an indigenous language of Eastern India",
     level: "Beginner",
     lessons: 20,
-    teachers: 1,
+    tutors: 1,
     flag: "🇮🇳",
   },
   {
@@ -165,7 +165,7 @@ const courses = [
     description: "Learn Filipino and discover Philippine culture",
     level: "Beginner to Intermediate",
     lessons: 60,
-    teachers: 5,
+    tutors: 5,
     flag: "🇵🇭",
   },
   {
@@ -175,7 +175,7 @@ const courses = [
     description: "Master visual communication through emojis and pictograms",
     level: "Beginner",
     lessons: 15,
-    teachers: 1,
+    tutors: 1,
     flag: "😀",
   },
   {
@@ -185,7 +185,7 @@ const courses = [
     description: "Discover Latin, the ancient language of the Roman Empire",
     level: "Beginner to Intermediate",
     lessons: 50,
-    teachers: 4,
+    tutors: 4,
     flag: "🏛️",
   },
   {
@@ -195,7 +195,7 @@ const courses = [
     description: "Learn Klingon, the constructed language from Star Trek",
     level: "Beginner",
     lessons: 25,
-    teachers: 2,
+    tutors: 2,
     flag: "🖖",
   },
 ];
@@ -236,7 +236,7 @@ export default function CoursesPage() {
                 <CardContent className="space-y-2">
                   <div className="flex items-center justify-between text-sm text-muted-foreground">
                     <span>📚 {course.lessons} lessons</span>
-                    <span>👨‍🏫 {course.teachers} teachers</span>
+                    <span>👨‍🏫 {course.tutors} tutors</span>
                   </div>
                 </CardContent>
               </Card>

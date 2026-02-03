@@ -1,9 +1,9 @@
 import { DashboardPageHeader } from "@/components/dashboard/dashboard-page-header";
 
-export default async function TrainerDashboardPage() {
+export default async function TutorDashboardPage() {
   return (
     <DashboardPageHeader
-      heading="Trainer Dashboard"
+      heading="Tutor Dashboard"
       text="Manage your courses and students."
     />
   );
