@@ -2,6 +2,7 @@ import { eq } from "drizzle-orm";
 import { redirect } from "next/navigation";
 import { auth } from "@/auth";
 import { DashboardPageHeader } from "@/components/dashboard/dashboard-page-header";
+import { SettingsBioForm } from "@/components/dashboard/settings/bio-form";
 import { SettingsPasswordForm } from "@/components/dashboard/settings/password-form";
 import { SettingsProfileForm } from "@/components/dashboard/settings/profile-form";
 import { db, users } from "@/db/schema";
@@ -32,6 +33,11 @@ export default async function DashboardSettingsPage() {
           defaultValues={{
             fullName: user.fullName,
             email: user.email,
+          }}
+        />
+        <SettingsBioForm
+          defaultValues={{
+            bio: user.bio,
           }}
         />
         <SettingsPasswordForm />

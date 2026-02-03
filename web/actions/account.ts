@@ -7,6 +7,7 @@ import type { z } from "zod";
 import { auth } from "@/auth";
 import { db, users } from "@/db/schema";
 import {
+  updateBioSchema,
   updatePasswordSchema,
   updateProfileSchema,
 } from "@/validations/account";
@@ -19,6 +20,14 @@ export type ProfileActionState = {
   };
 };
 
+export type BioActionState = {
+  success?: boolean;
+  message?: string;
+  errors?: {
+    bio?: string[];
+  };
+};
+
 export type PasswordActionState = {
   success?: boolean;
   message?: string;
@@ -28,6 +37,47 @@ export type PasswordActionState = {
     confirmNewPassword?: string[];
   };
 };
+
+export async function updateBio(
+  _prevState: BioActionState | null,
+  formData: FormData | z.infer<typeof updateBioSchema>,
+): Promise<BioActionState> {
+  try {
+    const session = await auth();
+    if (!session?.user?.id) {
+      return { success: false, message: "Unauthorized" };
+    }
+
+    const rawData =
+      formData instanceof FormData ? Object.fromEntries(formData) : formData;
+
+    const validatedFields = updateBioSchema.safeParse(rawData);
+
+    if (!validatedFields.success) {
+      return {
+        success: false,
+        message: "Invalid fields",
+        errors: validatedFields.error.flatten().fieldErrors,
+      };
+    }
+
+    const bio = validatedFields.data.bio.trim();
+
+    await db
+      .update(users)
+      .set({ bio: bio.length ? bio : null })
+      .where(eq(users.id, session.user.id));
+
+    revalidatePath("/dashboard/settings");
+    return { success: true, message: "Bio updated successfully" };
+  } catch (error) {
+    console.error("Bio update error:", error);
+    return {
+      success: false,
+      message: "An unexpected error occurred. Please try again.",
+    };
+  }
+}
 
 export async function updateProfile(
   _prevState: ProfileActionState | null,
