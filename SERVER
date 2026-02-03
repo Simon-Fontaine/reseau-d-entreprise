@@ -1,0 +1,17 @@
+!config switch serveur
+en
+conf t
+hostname SERVER
+vlan 10
+name MGM
+vlan 20
+name SERVER
+vlan 30
+name DMZ
+vlan 40
+name DATABASE
+int vlan 10
+ip add 10.0.10.6 255.255.255.0
+no shut
+int range f0/1 - 3
+switchport mode trunk
