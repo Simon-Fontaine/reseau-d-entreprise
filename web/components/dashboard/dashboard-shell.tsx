@@ -2,18 +2,18 @@ import Link from "next/link";
 import { APP_CONFIG, APP_LOGO } from "@/config";
 import { cn } from "@/lib/utils";
 import { DashboardHeader } from "./dashboard-header";
-import { DashboardSidebar, type SidebarNavItem } from "./dashboard-sidebar";
+import { DashboardSidebar } from "./dashboard-sidebar";
 
 interface DashboardShellProps {
   children: React.ReactNode;
-  sidebarItems: SidebarNavItem[];
   className?: string;
+  role?: string;
 }
 
 export function DashboardShell({
   children,
-  sidebarItems,
   className,
+  role,
 }: DashboardShellProps) {
   return (
     <div className="flex min-h-screen w-full flex-col bg-muted/20">
@@ -25,11 +25,11 @@ export function DashboardShell({
           </Link>
         </div>
         <div className="flex-1 overflow-auto py-6 px-4">
-          <DashboardSidebar items={sidebarItems} />
+          <DashboardSidebar role={role} />
         </div>
       </div>
       <div className="flex flex-col md:pl-64">
-        <DashboardHeader sidebarItems={sidebarItems} />
+        <DashboardHeader role={role} />
         <main className={cn("flex-1 p-4 md:p-6 lg:p-8", className)}>
           {children}
         </main>

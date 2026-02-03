@@ -3,24 +3,33 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Button } from "@/components/ui/button";
+import {
+  ADMIN_DASHBOARD_NAVIGATION,
+  STUDENT_DASHBOARD_NAVIGATION,
+  TRAINER_DASHBOARD_NAVIGATION,
+} from "@/config";
 import { cn } from "@/lib/utils";
-
-export type SidebarNavItem = {
-  title: string;
-  disabled?: boolean;
-  external?: boolean;
-  href?: string;
-  icon?: React.ReactNode;
-  items?: SidebarNavItem[];
-};
+import type { SidebarNavItem } from "@/types/nav";
 
 interface DashboardSidebarProps {
-  items: SidebarNavItem[];
   className?: string;
+  role?: string;
+  onLinkClick?: () => void;
 }
 
-export function DashboardSidebar({ items, className }: DashboardSidebarProps) {
+export function DashboardSidebar({
+  className,
+  role = "student",
+  onLinkClick,
+}: DashboardSidebarProps) {
   const pathname = usePathname();
+
+  let items: SidebarNavItem[] = STUDENT_DASHBOARD_NAVIGATION;
+  if (role === "admin") {
+    items = ADMIN_DASHBOARD_NAVIGATION;
+  } else if (role === "trainer") {
+    items = TRAINER_DASHBOARD_NAVIGATION;
+  }
 
   if (!items?.length) {
     return null;
@@ -42,8 +51,11 @@ export function DashboardSidebar({ items, className }: DashboardSidebarProps) {
                   className={cn(
                     item.disabled && "cursor-not-allowed opacity-80",
                   )}
+                  onClick={onLinkClick}
                 >
-                  {item.icon}
+                  {item.icon ? (
+                    <item.icon className="mr-2 h-4 w-4" aria-hidden="true" />
+                  ) : null}
                   <span>{item.title}</span>
                 </Link>
               </Button>
@@ -52,10 +64,12 @@ export function DashboardSidebar({ items, className }: DashboardSidebarProps) {
                 {item.title}
               </h4>
             )}
+
             {item.items?.length ? (
               <DashboardSidebarNamespace
                 items={item.items}
                 pathname={pathname}
+                onLinkClick={onLinkClick}
               />
             ) : null}
           </div>
@@ -68,9 +82,11 @@ export function DashboardSidebar({ items, className }: DashboardSidebarProps) {
 function DashboardSidebarNamespace({
   items,
   pathname,
+  onLinkClick,
 }: {
   items: SidebarNavItem[];
   pathname: string | null;
+  onLinkClick?: () => void;
 }) {
   return (
     <div className="grid grid-flow-row auto-rows-max text-sm">
@@ -84,6 +100,7 @@ function DashboardSidebarNamespace({
           <Link
             href={item.disabled ? "/" : (item.href ?? "#")}
             className={cn(item.disabled && "cursor-not-allowed opacity-60")}
+            onClick={onLinkClick}
           >
             {item.title}
           </Link>

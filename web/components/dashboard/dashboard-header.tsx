@@ -15,16 +15,17 @@ import { APP_CONFIG, APP_LOGO } from "@/config";
 import { cn } from "@/lib/utils";
 import { AuthButton } from "../auth-button";
 import { ThemeSwitcher } from "../theme-switcher";
-import { DashboardSidebar, type SidebarNavItem } from "./dashboard-sidebar";
+import { DashboardSidebar } from "./dashboard-sidebar";
 
 interface DashboardHeaderProps extends React.HTMLAttributes<HTMLElement> {
-  sidebarItems: SidebarNavItem[];
+  children?: React.ReactNode;
+  role?: string;
 }
 
 export function DashboardHeader({
   className,
-  sidebarItems,
   children,
+  role,
   ...props
 }: DashboardHeaderProps) {
   const [open, setOpen] = useState(false);
@@ -56,7 +57,7 @@ export function DashboardHeader({
               <APP_LOGO className="size-6 text-primary" />
               <span className="font-bold">{APP_CONFIG.APP_NAME}</span>
             </div>
-            <DashboardSidebar items={sidebarItems} />
+            <DashboardSidebar role={role} onLinkClick={() => setOpen(false)} />
           </DrawerContent>
         </Drawer>
       </div>

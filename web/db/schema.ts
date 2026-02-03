@@ -135,6 +135,24 @@ export const enrollmentsRelations = relations(enrollments, ({ one }) => ({
   }),
 }));
 
+export const chatMessagesRelations = relations(chatMessages, ({ one }) => ({
+  course: one(courses, {
+    fields: [chatMessages.courseId],
+    references: [courses.id],
+  }),
+  user: one(users, {
+    fields: [chatMessages.userId],
+    references: [users.id],
+  }),
+}));
+
+export const quizOptionsRelations = relations(quizOptions, ({ one }) => ({
+  question: one(quizQuestions, {
+    fields: [quizOptions.questionId],
+    references: [quizQuestions.id],
+  }),
+}));
+
 export const db = drizzle(process.env.DATABASE_URL || "", {
   schema: {
     users,
@@ -150,5 +168,7 @@ export const db = drizzle(process.env.DATABASE_URL || "", {
     chaptersRelations,
     quizQuestionsRelations,
     enrollmentsRelations,
+    chatMessagesRelations,
+    quizOptionsRelations,
   },
 });

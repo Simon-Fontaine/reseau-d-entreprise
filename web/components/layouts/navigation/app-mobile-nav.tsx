@@ -1,6 +1,7 @@
 "use client";
 
 import { ExternalLinkIcon, MenuIcon } from "lucide-react";
+
 import Link from "next/link";
 import { useSession } from "next-auth/react";
 import { useState } from "react";
