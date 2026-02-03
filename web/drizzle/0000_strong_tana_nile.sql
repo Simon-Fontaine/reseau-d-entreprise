@@ -1,6 +1,15 @@
 CREATE TYPE "public"."course_level" AS ENUM('A1', 'A2', 'B1', 'B2', 'C1', 'C2');--> statement-breakpoint
-CREATE TYPE "public"."course_status" AS ENUM('en_cours', 'termine', 'abandonne');--> statement-breakpoint
+CREATE TYPE "public"."course_publish_status" AS ENUM('draft', 'published', 'unpublished');--> statement-breakpoint
+CREATE TYPE "public"."course_status" AS ENUM('in_progress', 'completed', 'abandoned');--> statement-breakpoint
 CREATE TYPE "public"."user_role" AS ENUM('student', 'tutor', 'admin');--> statement-breakpoint
+CREATE TABLE "chapter_completions" (
+	"id" uuid PRIMARY KEY DEFAULT gen_random_uuid() NOT NULL,
+	"user_id" uuid,
+	"chapter_id" uuid,
+	"completed_at" timestamp DEFAULT now(),
+	CONSTRAINT "chapter_completions_user_chapter_uniq" UNIQUE("user_id","chapter_id")
+);
+--> statement-breakpoint
 CREATE TABLE "chapters" (
 	"id" uuid PRIMARY KEY DEFAULT gen_random_uuid() NOT NULL,
 	"course_id" uuid,
@@ -27,15 +36,17 @@ CREATE TABLE "courses" (
 	"description" text,
 	"image_url" varchar(255),
 	"estimated_duration" integer,
-	"emoji" text
+	"emoji" text,
+	"publish_status" "course_publish_status" DEFAULT 'draft' NOT NULL,
+	"published_at" timestamp,
+	"updated_at" timestamp DEFAULT now() NOT NULL
 );
 --> statement-breakpoint
 CREATE TABLE "enrollments" (
 	"id" uuid PRIMARY KEY DEFAULT gen_random_uuid() NOT NULL,
 	"user_id" uuid,
 	"course_id" uuid,
-	"status" "course_status" DEFAULT 'en_cours',
-	"progress_percent" integer DEFAULT 0,
+	"status" "course_status" DEFAULT 'in_progress',
 	CONSTRAINT "enrollments_user_course_uniq" UNIQUE("user_id","course_id")
 );
 --> statement-breakpoint
@@ -78,6 +89,8 @@ CREATE TABLE "users" (
 	CONSTRAINT "users_email_unique" UNIQUE("email")
 );
 --> statement-breakpoint
+ALTER TABLE "chapter_completions" ADD CONSTRAINT "chapter_completions_user_id_users_id_fk" FOREIGN KEY ("user_id") REFERENCES "public"."users"("id") ON DELETE no action ON UPDATE no action;--> statement-breakpoint
+ALTER TABLE "chapter_completions" ADD CONSTRAINT "chapter_completions_chapter_id_chapters_id_fk" FOREIGN KEY ("chapter_id") REFERENCES "public"."chapters"("id") ON DELETE no action ON UPDATE no action;--> statement-breakpoint
 ALTER TABLE "chapters" ADD CONSTRAINT "chapters_course_id_courses_id_fk" FOREIGN KEY ("course_id") REFERENCES "public"."courses"("id") ON DELETE no action ON UPDATE no action;--> statement-breakpoint
 ALTER TABLE "chat_messages" ADD CONSTRAINT "chat_messages_course_id_courses_id_fk" FOREIGN KEY ("course_id") REFERENCES "public"."courses"("id") ON DELETE no action ON UPDATE no action;--> statement-breakpoint
 ALTER TABLE "chat_messages" ADD CONSTRAINT "chat_messages_user_id_users_id_fk" FOREIGN KEY ("user_id") REFERENCES "public"."users"("id") ON DELETE no action ON UPDATE no action;--> statement-breakpoint

@@ -9,6 +9,7 @@ import {
   PageHeaderDescription,
   PageHeaderHeading,
 } from "@/components/layouts/page";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
@@ -67,9 +68,20 @@ export default async function TutorPage({ params }: TutorPageProps) {
         <Container>
           <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
             <div className="flex items-center gap-4">
-              <div className="flex h-14 w-14 items-center justify-center rounded-full bg-muted text-xl font-semibold">
-                {tutor.fullName.charAt(0)}
-              </div>
+              <Avatar className="size-14">
+                <AvatarImage
+                  src={`https://api.dicebear.com/9.x/avataaars/png?seed=${encodeURIComponent(
+                    tutor.fullName,
+                  )}`}
+                  alt={`Avatar of ${tutor.fullName}`}
+                />
+                <AvatarFallback>
+                  {tutor.fullName
+                    .split(" ")
+                    .map((part) => part[0])
+                    .join("")}
+                </AvatarFallback>
+              </Avatar>
               <div>
                 <PageHeaderHeading>{tutor.fullName}</PageHeaderHeading>
                 <PageHeaderDescription>

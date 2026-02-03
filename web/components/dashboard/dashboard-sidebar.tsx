@@ -23,6 +23,15 @@ export function DashboardSidebar({
   onLinkClick,
 }: DashboardSidebarProps) {
   const pathname = usePathname();
+  const isActive = (href?: string | null, exact = false) => {
+    if (!href || !pathname) {
+      return false;
+    }
+    if (exact) {
+      return pathname === href;
+    }
+    return pathname === href || pathname.startsWith(`${href}/`);
+  };
 
   let items: SidebarNavItem[] = STUDENT_DASHBOARD_NAVIGATION;
   if (role === "admin") {
@@ -43,7 +52,11 @@ export function DashboardSidebar({
             {item.href ? (
               <Button
                 asChild
-                variant={pathname === item.href ? "secondary" : "ghost"}
+                variant={
+                  isActive(item.href, item.title === "Overview")
+                    ? "secondary"
+                    : "ghost"
+                }
                 className="w-full justify-start"
               >
                 <Link
@@ -68,7 +81,7 @@ export function DashboardSidebar({
             {item.items?.length ? (
               <DashboardSidebarNamespace
                 items={item.items}
-                pathname={pathname}
+                isActive={isActive}
                 onLinkClick={onLinkClick}
               />
             ) : null}
@@ -81,11 +94,11 @@ export function DashboardSidebar({
 
 function DashboardSidebarNamespace({
   items,
-  pathname,
+  isActive,
   onLinkClick,
 }: {
   items: SidebarNavItem[];
-  pathname: string | null;
+  isActive: (href?: string | null) => boolean;
   onLinkClick?: () => void;
 }) {
   return (
@@ -94,7 +107,7 @@ function DashboardSidebarNamespace({
         <Button
           key={item.href ?? item.title}
           asChild
-          variant={pathname === item.href ? "secondary" : "ghost"}
+          variant={isActive(item.href) ? "secondary" : "ghost"}
           className="w-full justify-start pl-8"
         >
           <Link

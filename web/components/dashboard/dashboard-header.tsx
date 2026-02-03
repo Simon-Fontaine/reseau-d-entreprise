@@ -1,6 +1,7 @@
 "use client";
 
 import { Menu } from "lucide-react";
+import Link from "next/link";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import {
@@ -53,10 +54,14 @@ export function DashboardHeader({
                 Access dashboard navigation links
               </DrawerDescription>
             </DrawerHeader>
-            <div className="mb-6 flex items-center gap-2">
+            <Link
+              href="/"
+              onClick={() => setOpen(false)}
+              className="mb-6 flex items-center gap-2"
+            >
               <APP_LOGO className="size-6 text-primary" />
               <span className="font-bold">{APP_CONFIG.APP_NAME}</span>
-            </div>
+            </Link>
             <DashboardSidebar role={role} onLinkClick={() => setOpen(false)} />
           </DrawerContent>
         </Drawer>

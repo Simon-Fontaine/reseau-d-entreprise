@@ -16,9 +16,9 @@ import {
 export const userRoleEnum = pgEnum("user_role", ["student", "tutor", "admin"]);
 
 export const courseStatusEnum = pgEnum("course_status", [
-  "en_cours",
-  "termine",
-  "abandonne",
+  "in_progress",
+  "completed",
+  "abandoned",
 ]);
 
 export const coursePublishStatusEnum = pgEnum("course_publish_status", [
@@ -83,8 +83,7 @@ export const enrollments = pgTable(
     id: uuid("id").defaultRandom().primaryKey(),
     userId: uuid("user_id").references(() => users.id),
     courseId: uuid("course_id").references(() => courses.id),
-    status: courseStatusEnum("status").default("en_cours"),
-    progressPercent: integer("progress_percent").default(0),
+    status: courseStatusEnum("status").default("in_progress"),
   },
   (t) => [unique("enrollments_user_course_uniq").on(t.userId, t.courseId)],
 );
@@ -118,6 +117,19 @@ export const userQuizAttempts = pgTable("user_quiz_attempts", {
   scoreObtained: integer("score_obtained"),
   passed: boolean("passed").default(false),
 });
+
+export const chapterCompletions = pgTable(
+  "chapter_completions",
+  {
+    id: uuid("id").defaultRandom().primaryKey(),
+    userId: uuid("user_id").references(() => users.id),
+    chapterId: uuid("chapter_id").references(() => chapters.id),
+    completedAt: timestamp("completed_at").defaultNow(),
+  },
+  (t) => [
+    unique("chapter_completions_user_chapter_uniq").on(t.userId, t.chapterId),
+  ],
+);
 
 export const coursesRelations = relations(courses, ({ one, many }) => ({
   tutor: one(users, { fields: [courses.tutorId], references: [users.id] }),
@@ -175,12 +187,27 @@ export const quizOptionsRelations = relations(quizOptions, ({ one }) => ({
   }),
 }));
 
+export const chapterCompletionsRelations = relations(
+  chapterCompletions,
+  ({ one }) => ({
+    user: one(users, {
+      fields: [chapterCompletions.userId],
+      references: [users.id],
+    }),
+    chapter: one(chapters, {
+      fields: [chapterCompletions.chapterId],
+      references: [chapters.id],
+    }),
+  }),
+);
+
 export const db = drizzle(process.env.DATABASE_URL || "", {
   schema: {
     users,
     themes,
     courses,
     chapters,
+    chapterCompletions,
     enrollments,
     chatMessages,
     quizQuestions,
@@ -192,5 +219,6 @@ export const db = drizzle(process.env.DATABASE_URL || "", {
     enrollmentsRelations,
     chatMessagesRelations,
     quizOptionsRelations,
+    chapterCompletionsRelations,
   },
 });

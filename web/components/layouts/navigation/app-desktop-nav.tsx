@@ -12,6 +12,9 @@ export function AppDesktopNav() {
   const pathname = usePathname();
   const { data: session } = useSession();
 
+  const isActive = (href: string) =>
+    href === "/" ? pathname === "/" : pathname.startsWith(href);
+
   return (
     <div className="hidden md:flex md:items-center">
       <Link href="/" className="mr-6 flex items-center gap-2 lg:mr-8">
@@ -41,7 +44,7 @@ export function AppDesktopNav() {
               href={item.href}
               className={cn(
                 "group flex items-center gap-1 transition-colors hover:text-primary",
-                pathname.endsWith(item.href)
+                isActive(item.href)
                   ? "text-foreground"
                   : "text-muted-foreground",
               )}

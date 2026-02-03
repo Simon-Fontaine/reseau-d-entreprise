@@ -1,7 +1,10 @@
 import { and, eq } from "drizzle-orm";
 import { BookOpen, Clock, Trophy } from "lucide-react";
+import Link from "next/link";
 import { notFound } from "next/navigation";
 import { z } from "zod";
+import { auth } from "@/auth";
+import { EnrollButton } from "@/components/dashboard/student/course-actions";
 import {
   Container,
   Page,
@@ -10,9 +13,10 @@ import {
   PageHeaderHeading,
 } from "@/components/layouts/page";
 import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
-import { courses, db } from "@/db/schema";
+import { courses, db, enrollments } from "@/db/schema";
 
 interface CoursePageProps {
   params: Promise<{
@@ -45,6 +49,17 @@ export default async function CoursePage({ params }: CoursePageProps) {
   if (!course) {
     notFound();
   }
+
+  const session = await auth();
+  const studentId = session?.user?.role === "student" ? session.user.id : null;
+  const enrollment = studentId
+    ? await db.query.enrollments.findFirst({
+        where: and(
+          eq(enrollments.userId, studentId),
+          eq(enrollments.courseId, course.id),
+        ),
+      })
+    : null;
 
   const estimatedHours = course.estimatedDuration
     ? course.estimatedDuration / 60
@@ -102,6 +117,28 @@ export default async function CoursePage({ params }: CoursePageProps) {
         </div>
 
         <div className="space-y-6">
+          <div className="w-full">
+            {session?.user?.role === "student" ? (
+              enrollment ? (
+                <Button asChild className="w-full">
+                  <Link href={`/dashboard/student/courses/${course.id}`}>
+                    Study course
+                  </Link>
+                </Button>
+              ) : (
+                <EnrollButton
+                  courseId={course.id}
+                  className="w-full"
+                  buttonClassName="w-full"
+                />
+              )
+            ) : (
+              <Button asChild variant="outline" className="w-full">
+                <Link href="/login">Sign in to enroll</Link>
+              </Button>
+            )}
+          </div>
+
           <Card>
             <CardHeader>
               <CardTitle>Course Info</CardTitle>

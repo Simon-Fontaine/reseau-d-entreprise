@@ -3,6 +3,7 @@
 import { BookOpen, Clock } from "lucide-react";
 import Link from "next/link";
 import { useMemo, useState } from "react";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
@@ -109,9 +110,20 @@ export function TutorFilter({ themes, tutors }: TutorFilterProps) {
                 <CardHeader>
                   <div className="flex items-start justify-between gap-3">
                     <div className="flex items-center gap-3">
-                      <div className="flex h-12 w-12 items-center justify-center rounded-full bg-muted text-lg font-semibold">
-                        {tutor.fullName.charAt(0)}
-                      </div>
+                      <Avatar className="size-12">
+                        <AvatarImage
+                          src={`https://api.dicebear.com/9.x/avataaars/png?seed=${encodeURIComponent(
+                            tutor.fullName,
+                          )}`}
+                          alt={`Avatar of ${tutor.fullName}`}
+                        />
+                        <AvatarFallback>
+                          {tutor.fullName
+                            .split(" ")
+                            .map((part) => part[0])
+                            .join("")}
+                        </AvatarFallback>
+                      </Avatar>
                       <div>
                         <CardTitle className="text-lg">
                           {tutor.fullName}

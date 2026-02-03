@@ -1,9 +1,73 @@
 {
-  "id": "587c0770-d019-4a91-97f8-4655581ac471",
+  "id": "f368d5f2-cbab-4112-80d8-bb8aa7eac2f9",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
   "tables": {
+    "public.chapter_completions": {
+      "name": "chapter_completions",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "uuid",
+          "primaryKey": true,
+          "notNull": true,
+          "default": "gen_random_uuid()"
+        },
+        "user_id": {
+          "name": "user_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "chapter_id": {
+          "name": "chapter_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "completed_at": {
+          "name": "completed_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": false,
+          "default": "now()"
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "chapter_completions_user_id_users_id_fk": {
+          "name": "chapter_completions_user_id_users_id_fk",
+          "tableFrom": "chapter_completions",
+          "tableTo": "users",
+          "columnsFrom": ["user_id"],
+          "columnsTo": ["id"],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        },
+        "chapter_completions_chapter_id_chapters_id_fk": {
+          "name": "chapter_completions_chapter_id_chapters_id_fk",
+          "tableFrom": "chapter_completions",
+          "tableTo": "chapters",
+          "columnsFrom": ["chapter_id"],
+          "columnsTo": ["id"],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {
+        "chapter_completions_user_chapter_uniq": {
+          "name": "chapter_completions_user_chapter_uniq",
+          "nullsNotDistinct": false,
+          "columns": ["user_id", "chapter_id"]
+        }
+      },
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
     "public.chapters": {
       "name": "chapters",
       "schema": "",
@@ -189,6 +253,27 @@
           "type": "text",
           "primaryKey": false,
           "notNull": false
+        },
+        "publish_status": {
+          "name": "publish_status",
+          "type": "course_publish_status",
+          "typeSchema": "public",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "'draft'"
+        },
+        "published_at": {
+          "name": "published_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
         }
       },
       "indexes": {},
@@ -247,14 +332,7 @@
           "typeSchema": "public",
           "primaryKey": false,
           "notNull": false,
-          "default": "'en_cours'"
-        },
-        "progress_percent": {
-          "name": "progress_percent",
-          "type": "integer",
-          "primaryKey": false,
-          "notNull": false,
-          "default": 0
+          "default": "'in_progress'"
         }
       },
       "indexes": {},
@@ -555,10 +633,15 @@
       "schema": "public",
       "values": ["A1", "A2", "B1", "B2", "C1", "C2"]
     },
+    "public.course_publish_status": {
+      "name": "course_publish_status",
+      "schema": "public",
+      "values": ["draft", "published", "unpublished"]
+    },
     "public.course_status": {
       "name": "course_status",
       "schema": "public",
-      "values": ["en_cours", "termine", "abandonne"]
+      "values": ["in_progress", "completed", "abandoned"]
     },
     "public.user_role": {
       "name": "user_role",
