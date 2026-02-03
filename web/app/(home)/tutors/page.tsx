@@ -1,4 +1,4 @@
-import { eq, inArray } from "drizzle-orm";
+import { and, eq, inArray } from "drizzle-orm";
 import {
   Container,
   Page,
@@ -18,7 +18,10 @@ export default async function TutorsPage() {
 
   const tutorCourses = tutorIds.length
     ? await db.query.courses.findMany({
-        where: inArray(courses.tutorId, tutorIds),
+        where: and(
+          inArray(courses.tutorId, tutorIds),
+          eq(courses.publishStatus, "published"),
+        ),
       })
     : [];
 

@@ -45,15 +45,24 @@ async function main() {
       })
       .returning();
 
-    const [tutor] = await db
+    const [tutorOne, tutorTwo] = await db
       .insert(users)
-      .values({
-        fullName: "Sarah Lingua",
-        email: "tutor@example.com",
-        passwordHash: password,
-        role: "tutor",
-        bio: "Certified Language Instructor & Polyglot",
-      })
+      .values([
+        {
+          fullName: "Sarah Lingua",
+          email: "tutor.sarah@example.com",
+          passwordHash: password,
+          role: "tutor",
+          bio: "Certified Language Instructor & Polyglot",
+        },
+        {
+          fullName: "Julien Moreau",
+          email: "tutor.julien@example.com",
+          passwordHash: password,
+          role: "tutor",
+          bio: "Language Coach specializing in immersive learning",
+        },
+      ])
       .returning();
 
     const [student] = await db
@@ -95,94 +104,149 @@ async function main() {
 
     console.log("Themes created.");
 
-    const [frenchCourse] = await db
-      .insert(courses)
-      .values({
+    const coursesToCreate: Array<typeof courses.$inferInsert> = [
+      {
         title: "French for Beginners",
         minLevel: "A1",
         maxLevel: "A2",
         themeId: frenchTheme.id,
-        tutorId: tutor.id,
+        tutorId: tutorOne.id,
         description: "Master the basics of French grammar and vocabulary.",
         estimatedDuration: 600,
         emoji: "🥐",
-      })
-      .returning();
-
-    const [_spanishCourse] = await db
-      .insert(courses)
-      .values({
+        publishStatus: "published",
+        publishedAt: new Date(),
+      },
+      {
         title: "Spanish Survival Skills",
         minLevel: "A1",
         maxLevel: "B1",
         themeId: spanishTheme.id,
-        tutorId: tutor.id,
+        tutorId: tutorTwo.id,
         description: "Essential Spanish for travelers and beginners.",
         estimatedDuration: 450,
         emoji: "💃",
-      })
+        publishStatus: "published",
+        publishedAt: new Date(),
+      },
+      {
+        title: "French Conversation Boost",
+        minLevel: "A2",
+        maxLevel: "B1",
+        themeId: frenchTheme.id,
+        tutorId: tutorOne.id,
+        description: "Build confidence with everyday French dialogues.",
+        estimatedDuration: 520,
+        emoji: "🗣️",
+        publishStatus: "published",
+        publishedAt: new Date(),
+      },
+      {
+        title: "Spanish Grammar Essentials",
+        minLevel: "A2",
+        maxLevel: "B1",
+        themeId: spanishTheme.id,
+        tutorId: tutorTwo.id,
+        description: "Understand verb conjugations and sentence structure.",
+        estimatedDuration: 540,
+        emoji: "📘",
+        publishStatus: "published",
+        publishedAt: new Date(),
+      },
+      {
+        title: "German Starter Pack",
+        minLevel: "A1",
+        maxLevel: "A2",
+        themeId: _germanTheme.id,
+        tutorId: tutorOne.id,
+        description: "Start speaking German with core phrases and grammar.",
+        estimatedDuration: 480,
+        emoji: "🍺",
+        publishStatus: "published",
+        publishedAt: new Date(),
+      },
+    ];
+
+    const createdCourses = await db
+      .insert(courses)
+      .values(coursesToCreate)
       .returning();
 
     console.log("Courses created.");
 
-    const [chapter1] = await db
-      .insert(chapters)
-      .values({
-        courseId: frenchCourse.id,
-        title: "Greetings & Introductions",
-        contentMarkdown:
-          "# Greetings\n\nLearn how to say hello, goodbye, and introduce yourself in French...",
-        orderIndex: 1,
-      })
-      .returning();
+    for (const course of createdCourses) {
+      const [chapterOne] = await db
+        .insert(chapters)
+        .values({
+          courseId: course.id,
+          title: "Foundations",
+          contentMarkdown:
+            "# Foundations\n\nCore phrases, pronunciation tips, and essential vocabulary.",
+          orderIndex: 1,
+        })
+        .returning();
 
-    const [_chapter2] = await db
-      .insert(chapters)
-      .values({
-        courseId: frenchCourse.id,
-        title: "Numbers & Counting",
-        contentMarkdown: "# Numbers\n\nLearn to count from 1 to 100...",
+      await db.insert(chapters).values({
+        courseId: course.id,
+        title: "Practice & Review",
+        contentMarkdown:
+          "# Practice\n\nGuided exercises to reinforce what you've learned.",
         orderIndex: 2,
-      })
-      .returning();
+      });
+
+      const [questionOne] = await db
+        .insert(quizQuestions)
+        .values({
+          chapterId: chapterOne.id,
+          questionText: `Which level range does the course "${course.title}" cover?`,
+          points: 10,
+        })
+        .returning();
+
+      await db.insert(quizOptions).values([
+        {
+          questionId: questionOne.id,
+          optionText: course.minLevel,
+          isCorrect: true,
+        },
+        { questionId: questionOne.id, optionText: "C1", isCorrect: false },
+        { questionId: questionOne.id, optionText: "A0", isCorrect: false },
+      ]);
+
+      const [questionTwo] = await db
+        .insert(quizQuestions)
+        .values({
+          chapterId: chapterOne.id,
+          questionText: `How long is "${course.title}"?`,
+          points: 10,
+        })
+        .returning();
+
+      await db.insert(quizOptions).values([
+        {
+          questionId: questionTwo.id,
+          optionText: `${course.estimatedDuration} minutes`,
+          isCorrect: true,
+        },
+        {
+          questionId: questionTwo.id,
+          optionText: "120 minutes",
+          isCorrect: false,
+        },
+        {
+          questionId: questionTwo.id,
+          optionText: "900 minutes",
+          isCorrect: false,
+        },
+      ]);
+    }
 
     console.log("Chapters created.");
-
-    const [q1] = await db
-      .insert(quizQuestions)
-      .values({
-        chapterId: chapter1.id,
-        questionText: "How do you say 'Hello' in French?",
-        points: 10,
-      })
-      .returning();
-
-    await db.insert(quizOptions).values([
-      { questionId: q1.id, optionText: "Hola", isCorrect: false },
-      { questionId: q1.id, optionText: "Bonjour", isCorrect: true },
-      { questionId: q1.id, optionText: "Guten Tag", isCorrect: false },
-    ]);
-
-    const [q2] = await db
-      .insert(quizQuestions)
-      .values({
-        chapterId: chapter1.id,
-        questionText: "What does 'Merci' mean?",
-        points: 10,
-      })
-      .returning();
-
-    await db.insert(quizOptions).values([
-      { questionId: q2.id, optionText: "Please", isCorrect: false },
-      { questionId: q2.id, optionText: "Thank you", isCorrect: true },
-      { questionId: q2.id, optionText: "Sorry", isCorrect: false },
-    ]);
-
     console.log("Quizzes created.");
 
     await db.insert(enrollments).values({
       userId: student.id,
-      courseId: frenchCourse.id,
+      courseId: createdCourses[0].id,
       status: "en_cours",
       progressPercent: 15,
     });

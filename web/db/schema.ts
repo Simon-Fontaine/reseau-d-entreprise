@@ -21,6 +21,12 @@ export const courseStatusEnum = pgEnum("course_status", [
   "abandonne",
 ]);
 
+export const coursePublishStatusEnum = pgEnum("course_publish_status", [
+  "draft",
+  "published",
+  "unpublished",
+]);
+
 export const courseLevelEnum = pgEnum("course_level", [
   "A1",
   "A2",
@@ -56,6 +62,11 @@ export const courses = pgTable("courses", {
   imageUrl: varchar("image_url", { length: 255 }),
   estimatedDuration: integer("estimated_duration"),
   emoji: text("emoji"),
+  publishStatus: coursePublishStatusEnum("publish_status")
+    .default("draft")
+    .notNull(),
+  publishedAt: timestamp("published_at"),
+  updatedAt: timestamp("updated_at").defaultNow().notNull(),
 });
 
 export const chapters = pgTable("chapters", {

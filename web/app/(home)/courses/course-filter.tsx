@@ -26,6 +26,8 @@ type CourseSummary = {
   minLevel: string;
   maxLevel: string;
   emoji: string | null;
+  publishedAt: Date | null;
+  updatedAt: Date | null;
   theme: ThemeSummary | null;
   chaptersCount: number;
   tutorName: string | null;
@@ -38,6 +40,15 @@ type CourseFilterProps = {
 
 export function CourseFilter({ themes, courses }: CourseFilterProps) {
   const [activeThemeId, setActiveThemeId] = useState<string | "all">("all");
+
+  const formatDate = (value?: Date | null) =>
+    value
+      ? new Intl.DateTimeFormat("en-US", {
+          month: "short",
+          day: "numeric",
+          year: "numeric",
+        }).format(new Date(value))
+      : "—";
 
   const filteredCourses = useMemo(() => {
     if (activeThemeId === "all") {
@@ -101,11 +112,11 @@ export function CourseFilter({ themes, courses }: CourseFilterProps) {
             <Link
               key={course.id}
               href={`/courses/${course.id}`}
-              className="group transition-transform hover:scale-105"
+              className="group flex h-full transition-transform hover:scale-105"
             >
-              <Card className="h-full cursor-pointer transition-shadow hover:shadow-lg">
-                <CardHeader>
-                  <div className="mb-3 flex items-center justify-between">
+              <Card className="flex min-h-[340px] w-full flex-col cursor-pointer transition-shadow hover:shadow-lg">
+                <CardHeader className="space-y-3">
+                  <div className="flex items-center justify-between">
                     <span
                       className="text-5xl"
                       role="img"
@@ -118,13 +129,11 @@ export function CourseFilter({ themes, courses }: CourseFilterProps) {
                     </Badge>
                   </div>
                   <CardTitle className="text-xl">{course.title}</CardTitle>
-                  {course.description && (
-                    <CardDescription className="line-clamp-2">
-                      {course.description}
-                    </CardDescription>
-                  )}
+                  <CardDescription className="min-h-[2.5rem] line-clamp-2">
+                    {course.description || ""}
+                  </CardDescription>
                 </CardHeader>
-                <CardContent className="space-y-2">
+                <CardContent className="mt-auto space-y-2">
                   <div className="flex items-center justify-between text-sm text-muted-foreground">
                     <span className="flex items-center gap-1">
                       <BookOpen className="h-4 w-4" />
@@ -142,6 +151,10 @@ export function CourseFilter({ themes, courses }: CourseFilterProps) {
                       {course.theme.emoji || "✨"} {course.theme.name}
                     </Badge>
                   )}
+                  <p className="text-xs text-muted-foreground">
+                    Published {formatDate(course.publishedAt)} · Updated{" "}
+                    {formatDate(course.updatedAt)}
+                  </p>
                 </CardContent>
               </Card>
             </Link>

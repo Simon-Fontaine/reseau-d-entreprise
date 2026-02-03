@@ -1,3 +1,4 @@
+import { eq } from "drizzle-orm";
 import {
   Container,
   Page,
@@ -5,11 +6,12 @@ import {
   PageHeaderDescription,
   PageHeaderHeading,
 } from "@/components/layouts/page";
-import { db } from "@/db/schema";
+import { courses, db } from "@/db/schema";
 import { CourseFilter } from "./course-filter";
 
 export default async function CoursesPage() {
-  const courses = await db.query.courses.findMany({
+  const courseList = await db.query.courses.findMany({
+    where: eq(courses.publishStatus, "published"),
     with: {
       theme: true,
       tutor: true,
@@ -19,13 +21,15 @@ export default async function CoursesPage() {
 
   const themes = await db.query.themes.findMany();
 
-  const courseCards = courses.map((course) => ({
+  const courseCards = courseList.map((course) => ({
     id: course.id,
     title: course.title,
     description: course.description,
     minLevel: course.minLevel,
     maxLevel: course.maxLevel,
     emoji: course.emoji,
+    publishedAt: course.publishedAt,
+    updatedAt: course.updatedAt,
     theme: course.theme
       ? {
           id: course.theme.id,

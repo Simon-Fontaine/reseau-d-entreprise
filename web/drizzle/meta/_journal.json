@@ -8,6 +8,20 @@
       "when": 1770118593336,
       "tag": "0000_overjoyed_molly_hayes",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1770123736487,
+      "tag": "0001_aspiring_giant_man",
+      "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1770125969588,
+      "tag": "0002_absurd_iron_monger",
+      "breakpoints": true
     }
   ]
 }

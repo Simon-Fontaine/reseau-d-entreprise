@@ -1,4 +1,4 @@
-import { eq } from "drizzle-orm";
+import { and, eq } from "drizzle-orm";
 import { BookOpen, Clock, Trophy } from "lucide-react";
 import { notFound } from "next/navigation";
 import { z } from "zod";
@@ -29,7 +29,10 @@ export default async function CoursePage({ params }: CoursePageProps) {
   }
 
   const course = await db.query.courses.findFirst({
-    where: eq(courses.id, courseId),
+    where: and(
+      eq(courses.id, courseId),
+      eq(courses.publishStatus, "published"),
+    ),
     with: {
       chapters: {
         orderBy: (chapters, { asc }) => [asc(chapters.orderIndex)],
@@ -127,6 +130,35 @@ export default async function CoursePage({ params }: CoursePageProps) {
                 </span>
                 <span>
                   {course.minLevel} - {course.maxLevel}
+                </span>
+              </div>
+              <Separator />
+              <div className="flex items-center justify-between">
+                <span className="flex items-center gap-2 text-muted-foreground">
+                  Published
+                </span>
+                <span>
+                  {course.publishedAt
+                    ? new Intl.DateTimeFormat("en-US", {
+                        month: "short",
+                        day: "numeric",
+                        year: "numeric",
+                      }).format(course.publishedAt)
+                    : "—"}
+                </span>
+              </div>
+              <div className="flex items-center justify-between">
+                <span className="flex items-center gap-2 text-muted-foreground">
+                  Last updated
+                </span>
+                <span>
+                  {course.updatedAt
+                    ? new Intl.DateTimeFormat("en-US", {
+                        month: "short",
+                        day: "numeric",
+                        year: "numeric",
+                      }).format(course.updatedAt)
+                    : "—"}
                 </span>
               </div>
             </CardContent>

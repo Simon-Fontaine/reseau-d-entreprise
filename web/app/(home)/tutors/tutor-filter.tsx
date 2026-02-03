@@ -103,9 +103,9 @@ export function TutorFilter({ themes, tutors }: TutorFilterProps) {
             <Link
               key={tutor.id}
               href={`/tutors/${tutor.id}`}
-              className="group transition-transform hover:scale-105"
+              className="group flex h-full transition-transform hover:scale-105"
             >
-              <Card className="h-full cursor-pointer transition-shadow hover:shadow-lg">
+              <Card className="flex min-h-[340px] w-full flex-col cursor-pointer transition-shadow hover:shadow-lg">
                 <CardHeader>
                   <div className="flex items-start justify-between gap-3">
                     <div className="flex items-center gap-3">
@@ -127,8 +127,8 @@ export function TutorFilter({ themes, tutors }: TutorFilterProps) {
                     </Badge>
                   </div>
                 </CardHeader>
-                <CardContent className="space-y-4">
-                  <p className="text-sm text-muted-foreground line-clamp-3">
+                <CardContent className="mt-auto space-y-4">
+                  <p className="min-h-[3.75rem] text-sm text-muted-foreground line-clamp-3">
                     {tutor.bio ||
                       "Passionate about helping learners grow their language confidence."}
                   </p>

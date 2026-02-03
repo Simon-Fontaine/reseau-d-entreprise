@@ -1,4 +1,4 @@
-import { eq } from "drizzle-orm";
+import { and, eq } from "drizzle-orm";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { z } from "zod";
@@ -46,7 +46,10 @@ export default async function TutorPage({ params }: TutorPageProps) {
   }
 
   const tutorCourses = await db.query.courses.findMany({
-    where: eq(courses.tutorId, tutorId),
+    where: and(
+      eq(courses.tutorId, tutorId),
+      eq(courses.publishStatus, "published"),
+    ),
     with: {
       theme: true,
       chapters: true,
@@ -140,10 +143,10 @@ export default async function TutorPage({ params }: TutorPageProps) {
                 <Link
                   key={course.id}
                   href={`/courses/${course.id}`}
-                  className="group transition-transform hover:scale-[1.01]"
+                  className="group flex h-full transition-transform hover:scale-[1.01]"
                 >
-                  <Card className="h-full cursor-pointer transition-shadow hover:shadow-md">
-                    <CardHeader>
+                  <Card className="flex min-h-[240px] w-full flex-col cursor-pointer transition-shadow hover:shadow-md">
+                    <CardHeader className="space-y-3">
                       <div className="flex items-center justify-between">
                         <CardTitle className="text-lg">
                           {course.title}
@@ -158,8 +161,8 @@ export default async function TutorPage({ params }: TutorPageProps) {
                         </Badge>
                       )}
                     </CardHeader>
-                    <CardContent className="space-y-3">
-                      <p className="text-sm text-muted-foreground">
+                    <CardContent className="mt-auto space-y-3">
+                      <p className="min-h-[3.5rem] text-sm text-muted-foreground line-clamp-3">
                         {course.description || "No description available."}
                       </p>
                       <div className="text-xs text-muted-foreground">
