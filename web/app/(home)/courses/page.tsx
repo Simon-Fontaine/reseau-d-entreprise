@@ -3,9 +3,10 @@ import {
   Container,
   Page,
   PageHeader,
-  PageHeaderHeading,
   PageHeaderDescription,
+  PageHeaderHeading,
 } from "@/components/layouts/page";
+import { Badge } from "@/components/ui/badge";
 import {
   Card,
   CardContent,
@@ -13,14 +14,14 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
 
 const courses = [
   {
     id: "english",
     name: "English",
     nameEnglish: "English",
-    description: "Learn English, the most widely spoken international language in the world",
+    description:
+      "Learn English, the most widely spoken international language in the world",
     level: "Beginner to Advanced",
     lessons: 120,
     teachers: 15,
@@ -30,7 +31,8 @@ const courses = [
     id: "french",
     name: "French",
     nameEnglish: "French",
-    description: "Master the language of Molière and discover Francophone culture",
+    description:
+      "Master the language of Molière and discover Francophone culture",
     level: "Beginner to Advanced",
     lessons: 95,
     teachers: 12,
@@ -205,8 +207,9 @@ export default function CoursesPage() {
         <Container>
           <PageHeaderHeading>Our Language Courses</PageHeaderHeading>
           <PageHeaderDescription>
-            Choose from our selection of language courses and start your learning journey today.
-            All our courses are designed to guide you from beginner to advanced level.
+            Choose from our selection of language courses and start your
+            learning journey today. All our courses are designed to guide you
+            from beginner to advanced level.
           </PageHeaderDescription>
         </Container>
       </PageHeader>

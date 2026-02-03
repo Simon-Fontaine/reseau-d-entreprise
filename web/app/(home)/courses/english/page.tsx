@@ -2,9 +2,10 @@ import {
   Container,
   Page,
   PageHeader,
-  PageHeaderHeading,
   PageHeaderDescription,
+  PageHeaderHeading,
 } from "@/components/layouts/page";
+import { Badge } from "@/components/ui/badge";
 import {
   Card,
   CardContent,
@@ -12,13 +13,13 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
 
 const modules = [
   {
     id: 1,
     title: "Introduction to English",
-    description: "Learn the basics: alphabet, pronunciation, and simple greetings",
+    description:
+      "Learn the basics: alphabet, pronunciation, and simple greetings",
     level: "Beginner",
     duration: "2 weeks",
     lessons: 8,
@@ -42,7 +43,8 @@ const modules = [
   {
     id: 4,
     title: "Intermediate Grammar",
-    description: "Explore complex tenses, conditionals, and advanced structures",
+    description:
+      "Explore complex tenses, conditionals, and advanced structures",
     level: "Intermediate",
     duration: "6 weeks",
     lessons: 20,
@@ -122,7 +124,8 @@ export default function EnglishCoursePage() {
             <div>
               <PageHeaderHeading>English Course</PageHeaderHeading>
               <PageHeaderDescription>
-                Learn English, the most widely spoken international language in the world
+                Learn English, the most widely spoken international language in
+                the world
               </PageHeaderDescription>
             </div>
           </div>
@@ -150,7 +153,10 @@ export default function EnglishCoursePage() {
             <h2 className="text-3xl font-bold mb-6">Course Modules</h2>
             <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
               {modules.map((module) => (
-                <Card key={module.id} className="hover:shadow-lg transition-shadow">
+                <Card
+                  key={module.id}
+                  className="hover:shadow-lg transition-shadow"
+                >
                   <CardHeader>
                     <div className="flex items-start justify-between mb-2">
                       <CardTitle className="text-lg">
@@ -176,19 +182,26 @@ export default function EnglishCoursePage() {
             <h2 className="text-3xl font-bold mb-6">Our Teachers</h2>
             <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
               {teachers.map((teacher) => (
-                <Card key={teacher.id} className="hover:shadow-lg transition-shadow">
+                <Card
+                  key={teacher.id}
+                  className="hover:shadow-lg transition-shadow"
+                >
                   <CardHeader>
                     <div className="flex items-center gap-3 mb-2">
                       <span className="text-3xl">{teacher.nationality}</span>
                       <div>
-                        <CardTitle className="text-base">{teacher.name}</CardTitle>
+                        <CardTitle className="text-base">
+                          {teacher.name}
+                        </CardTitle>
                       </div>
                     </div>
                     <CardDescription className="space-y-1">
                       <div className="font-medium text-foreground">
                         {teacher.specialization}
                       </div>
-                      <div className="text-xs">{teacher.experience} of experience</div>
+                      <div className="text-xs">
+                        {teacher.experience} of experience
+                      </div>
                     </CardDescription>
                   </CardHeader>
                 </Card>
@@ -218,7 +231,8 @@ export default function EnglishCoursePage() {
                     Career Opportunities
                   </CardTitle>
                   <CardDescription>
-                    Open doors to international job markets and career advancement
+                    Open doors to international job markets and career
+                    advancement
                   </CardDescription>
                 </CardHeader>
               </Card>
@@ -229,7 +243,8 @@ export default function EnglishCoursePage() {
                     Academic Excellence
                   </CardTitle>
                   <CardDescription>
-                    Access top universities and academic resources around the world
+                    Access top universities and academic resources around the
+                    world
                   </CardDescription>
                 </CardHeader>
               </Card>
@@ -251,7 +266,8 @@ export default function EnglishCoursePage() {
                     Travel & Culture
                   </CardTitle>
                   <CardDescription>
-                    Navigate the world with ease and connect with diverse cultures
+                    Navigate the world with ease and connect with diverse
+                    cultures
                   </CardDescription>
                 </CardHeader>
               </Card>
@@ -262,7 +278,8 @@ export default function EnglishCoursePage() {
                     Technology & Internet
                   </CardTitle>
                   <CardDescription>
-                    Master the language of technology, programming, and the internet
+                    Master the language of technology, programming, and the
+                    internet
                   </CardDescription>
                 </CardHeader>
               </Card>

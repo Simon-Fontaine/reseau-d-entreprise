@@ -62,9 +62,7 @@ export const enrollments = pgTable(
     status: courseStatusEnum("status").default("en_cours"),
     progressPercent: integer("progress_percent").default(0),
   },
-  (t) => ({
-    unq: unique().on(t.userId, t.courseId),
-  }),
+  (t) => [unique("enrollments_user_course_uniq").on(t.userId, t.courseId)],
 );
 
 export const chatMessages = pgTable("chat_messages", {
