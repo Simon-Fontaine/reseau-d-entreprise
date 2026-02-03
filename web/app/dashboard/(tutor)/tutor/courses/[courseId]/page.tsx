@@ -6,6 +6,7 @@ import {
   Clock,
   Eye,
   Globe,
+  MessageSquare,
   Settings,
 } from "lucide-react";
 import Link from "next/link";
@@ -119,14 +120,18 @@ export default async function TutorCourseManagePage({
     <div className="space-y-6">
       {/* Header */}
       <DashboardPageHeader
-        heading={course.title}
+        heading={
+          <div className="flex items-center gap-3">
+            {course.title}
+            <Badge variant={status.variant} className="gap-1">
+              <StatusIcon className="h-3 w-3" />
+              {status.label}
+            </Badge>
+          </div>
+        }
         text="Manage your course content, chapters, and quizzes."
       >
         <div className="flex items-center gap-2">
-          <Badge variant={status.variant} className="gap-1">
-            <StatusIcon className="h-3 w-3" />
-            {status.label}
-          </Badge>
           <Button asChild variant="outline">
             <Link href="/dashboard/tutor/courses">
               <ArrowLeft className="mr-2 h-4 w-4" />
@@ -230,6 +235,10 @@ export default async function TutorCourseManagePage({
             <Settings className="mr-2 h-4 w-4" />
             Course Settings
           </TabsTrigger>
+          <TabsTrigger value="messages">
+            <MessageSquare className="mr-2 h-4 w-4" />
+            Messages
+          </TabsTrigger>
         </TabsList>
 
         {/* Chapters & Quizzes Tab */}
@@ -295,6 +304,30 @@ export default async function TutorCourseManagePage({
           )}
         </TabsContent>
 
+        {/* Messages Tab */}
+        <TabsContent value="messages" className="max-w-3xl">
+          <div className="space-y-6">
+            <div>
+              <h2 className="text-lg font-semibold">Course Chat</h2>
+              <p className="text-sm text-muted-foreground">
+                Communicate with students enrolled in this course.
+              </p>
+            </div>
+            <div className="space-y-6">
+              <div>
+                <h2 className="text-lg font-semibold">Course Chat</h2>
+                <p className="text-sm text-muted-foreground">
+                  Communicate with students enrolled in this course from the
+                  dedicated messages page.
+                </p>
+              </div>
+              <Button asChild>
+                <Link href="/dashboard/tutor/messages">Go to Messages</Link>
+              </Button>
+            </div>
+          </div>
+        </TabsContent>
+
         {/* Settings Tab */}
         <TabsContent value="settings" className="space-y-6">
           <div className="grid gap-6 lg:grid-cols-[2fr_1fr]">
@@ -312,7 +345,6 @@ export default async function TutorCourseManagePage({
                 themeId: course.themeId,
                 estimatedDuration: course.estimatedDuration,
                 emoji: course.emoji,
-                imageUrl: course.imageUrl,
                 publishStatus: course.publishStatus,
               }}
             />

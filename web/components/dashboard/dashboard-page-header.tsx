@@ -2,7 +2,7 @@ import { cn } from "@/lib/utils";
 
 interface DashboardPageHeaderProps
   extends React.HTMLAttributes<HTMLDivElement> {
-  heading: string;
+  heading: React.ReactNode | string;
   text?: string;
   children?: React.ReactNode;
 }

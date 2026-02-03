@@ -65,6 +65,15 @@ export default async function TutorDashboardPage() {
     0,
   );
 
+  const totalDurationMinutes = tutorCourses.reduce(
+    (sum, c) => sum + (c.estimatedDuration || 0),
+    0,
+  );
+
+  const uniqueThemes = new Set(
+    tutorCourses.map((c) => c.themeId).filter(Boolean),
+  ).size;
+
   // Get courses that need attention (drafts, no chapters, or unpublished with content)
   const coursesNeedingAttention = tutorCourses.filter((course) => {
     const hasNoChapters = course.chapters.length === 0;
@@ -367,18 +376,18 @@ export default async function TutorDashboardPage() {
             </div>
             <div className="text-center border-x border-border">
               <div className="text-3xl font-bold text-primary">
-                {totalQuestions}
+                {Math.round(totalDurationMinutes / 60)}
               </div>
               <p className="text-sm text-muted-foreground mt-1">
-                Quiz questions written
+                Total hours of content
               </p>
             </div>
             <div className="text-center">
               <div className="text-3xl font-bold text-primary">
-                {totalEnrollments}
+                {uniqueThemes}
               </div>
               <p className="text-sm text-muted-foreground mt-1">
-                Students enrolled
+                Active themes
               </p>
             </div>
           </div>

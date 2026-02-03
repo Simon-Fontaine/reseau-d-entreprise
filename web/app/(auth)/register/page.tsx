@@ -102,7 +102,7 @@ export default function RegisterPage() {
 
   return (
     <div className="bg-muted/50 flex flex-1 flex-col items-center justify-center px-4 py-8 sm:px-6 md:px-10">
-      <div className="flex w-full max-w-[400px] flex-col gap-6">
+      <div className="flex w-full max-w-100 flex-col gap-6">
         <Link href="/" className="flex items-center justify-center gap-2">
           <APP_LOGO className="size-8 text-primary" />
           <span className="text-xl font-bold">{APP_CONFIG.APP_NAME}</span>

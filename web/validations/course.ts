@@ -20,7 +20,6 @@ export const courseSchema = z.object({
     .optional()
     .or(z.literal("")),
   emoji: z.string().trim().max(10).optional().or(z.literal("")),
-  imageUrl: z.string().trim().url().optional().or(z.literal("")),
   publishStatus: coursePublishStatusSchema,
 });
 

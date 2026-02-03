@@ -7,6 +7,7 @@ import { auth } from "@/auth";
 import { DashboardPageHeader } from "@/components/dashboard/dashboard-page-header";
 import { EnrollButton } from "@/components/dashboard/student/course-actions";
 import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import { chapterCompletions, courses, db, enrollments } from "@/db/schema";
@@ -173,22 +174,38 @@ export default async function StudentCoursePage({ params }: CoursePageProps) {
           </Card>
 
           {enrollment ? (
-            <Card>
-              <CardHeader>
-                <CardTitle>Your progress</CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                <div className="text-sm text-muted-foreground">
-                  {progressPercent}% complete
-                </div>
-                <div className="h-2 rounded-full bg-muted">
-                  <div
-                    className="h-full rounded-full bg-primary"
-                    style={{ width: `${progressPercent}%` }}
-                  />
-                </div>
-              </CardContent>
-            </Card>
+            <>
+              <Card>
+                <CardHeader>
+                  <CardTitle>Your progress</CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  <div className="text-sm text-muted-foreground">
+                    {progressPercent}% complete
+                  </div>
+                  <div className="h-2 rounded-full bg-muted">
+                    <div
+                      className="h-full rounded-full bg-primary"
+                      style={{ width: `${progressPercent}%` }}
+                    />
+                  </div>
+                </CardContent>
+              </Card>
+
+              <Card>
+                <CardHeader>
+                  <CardTitle>Course Chat</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <p className="text-sm text-muted-foreground mb-4">
+                    Have questions? Chat with your tutor directly.
+                  </p>
+                  <Button asChild className="w-full">
+                    <Link href="/dashboard/student/messages">Open Chat</Link>
+                  </Button>
+                </CardContent>
+              </Card>
+            </>
           ) : (
             <Card>
               <CardHeader>

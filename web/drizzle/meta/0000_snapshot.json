@@ -1,5 +1,5 @@
 {
-  "id": "f368d5f2-cbab-4112-80d8-bb8aa7eac2f9",
+  "id": "415ad933-e35d-45a1-81c6-e0744c249cfb",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
@@ -41,18 +41,26 @@
           "name": "chapter_completions_user_id_users_id_fk",
           "tableFrom": "chapter_completions",
           "tableTo": "users",
-          "columnsFrom": ["user_id"],
-          "columnsTo": ["id"],
-          "onDelete": "no action",
+          "columnsFrom": [
+            "user_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
           "onUpdate": "no action"
         },
         "chapter_completions_chapter_id_chapters_id_fk": {
           "name": "chapter_completions_chapter_id_chapters_id_fk",
           "tableFrom": "chapter_completions",
           "tableTo": "chapters",
-          "columnsFrom": ["chapter_id"],
-          "columnsTo": ["id"],
-          "onDelete": "no action",
+          "columnsFrom": [
+            "chapter_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
           "onUpdate": "no action"
         }
       },
@@ -61,7 +69,10 @@
         "chapter_completions_user_chapter_uniq": {
           "name": "chapter_completions_user_chapter_uniq",
           "nullsNotDistinct": false,
-          "columns": ["user_id", "chapter_id"]
+          "columns": [
+            "user_id",
+            "chapter_id"
+          ]
         }
       },
       "policies": {},
@@ -111,9 +122,13 @@
           "name": "chapters_course_id_courses_id_fk",
           "tableFrom": "chapters",
           "tableTo": "courses",
-          "columnsFrom": ["course_id"],
-          "columnsTo": ["id"],
-          "onDelete": "no action",
+          "columnsFrom": [
+            "course_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
           "onUpdate": "no action"
         }
       },
@@ -158,6 +173,18 @@
           "primaryKey": false,
           "notNull": false,
           "default": "now()"
+        },
+        "recipient_id": {
+          "name": "recipient_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "read_at": {
+          "name": "read_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": false
         }
       },
       "indexes": {},
@@ -166,18 +193,39 @@
           "name": "chat_messages_course_id_courses_id_fk",
           "tableFrom": "chat_messages",
           "tableTo": "courses",
-          "columnsFrom": ["course_id"],
-          "columnsTo": ["id"],
-          "onDelete": "no action",
+          "columnsFrom": [
+            "course_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
           "onUpdate": "no action"
         },
         "chat_messages_user_id_users_id_fk": {
           "name": "chat_messages_user_id_users_id_fk",
           "tableFrom": "chat_messages",
           "tableTo": "users",
-          "columnsFrom": ["user_id"],
-          "columnsTo": ["id"],
-          "onDelete": "no action",
+          "columnsFrom": [
+            "user_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        },
+        "chat_messages_recipient_id_users_id_fk": {
+          "name": "chat_messages_recipient_id_users_id_fk",
+          "tableFrom": "chat_messages",
+          "tableTo": "users",
+          "columnsFrom": [
+            "recipient_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
           "onUpdate": "no action"
         }
       },
@@ -236,12 +284,6 @@
           "primaryKey": false,
           "notNull": false
         },
-        "image_url": {
-          "name": "image_url",
-          "type": "varchar(255)",
-          "primaryKey": false,
-          "notNull": false
-        },
         "estimated_duration": {
           "name": "estimated_duration",
           "type": "integer",
@@ -282,8 +324,12 @@
           "name": "courses_theme_id_themes_id_fk",
           "tableFrom": "courses",
           "tableTo": "themes",
-          "columnsFrom": ["theme_id"],
-          "columnsTo": ["id"],
+          "columnsFrom": [
+            "theme_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
           "onDelete": "no action",
           "onUpdate": "no action"
         },
@@ -291,9 +337,13 @@
           "name": "courses_tutor_id_users_id_fk",
           "tableFrom": "courses",
           "tableTo": "users",
-          "columnsFrom": ["tutor_id"],
-          "columnsTo": ["id"],
-          "onDelete": "no action",
+          "columnsFrom": [
+            "tutor_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
           "onUpdate": "no action"
         }
       },
@@ -341,18 +391,26 @@
           "name": "enrollments_user_id_users_id_fk",
           "tableFrom": "enrollments",
           "tableTo": "users",
-          "columnsFrom": ["user_id"],
-          "columnsTo": ["id"],
-          "onDelete": "no action",
+          "columnsFrom": [
+            "user_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
           "onUpdate": "no action"
         },
         "enrollments_course_id_courses_id_fk": {
           "name": "enrollments_course_id_courses_id_fk",
           "tableFrom": "enrollments",
           "tableTo": "courses",
-          "columnsFrom": ["course_id"],
-          "columnsTo": ["id"],
-          "onDelete": "no action",
+          "columnsFrom": [
+            "course_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
           "onUpdate": "no action"
         }
       },
@@ -361,7 +419,10 @@
         "enrollments_user_course_uniq": {
           "name": "enrollments_user_course_uniq",
           "nullsNotDistinct": false,
-          "columns": ["user_id", "course_id"]
+          "columns": [
+            "user_id",
+            "course_id"
+          ]
         }
       },
       "policies": {},
@@ -405,9 +466,13 @@
           "name": "quiz_options_question_id_quiz_questions_id_fk",
           "tableFrom": "quiz_options",
           "tableTo": "quiz_questions",
-          "columnsFrom": ["question_id"],
-          "columnsTo": ["id"],
-          "onDelete": "no action",
+          "columnsFrom": [
+            "question_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
           "onUpdate": "no action"
         }
       },
@@ -454,9 +519,13 @@
           "name": "quiz_questions_chapter_id_chapters_id_fk",
           "tableFrom": "quiz_questions",
           "tableTo": "chapters",
-          "columnsFrom": ["chapter_id"],
-          "columnsTo": ["id"],
-          "onDelete": "no action",
+          "columnsFrom": [
+            "chapter_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
           "onUpdate": "no action"
         }
       },
@@ -497,7 +566,9 @@
         "themes_name_unique": {
           "name": "themes_name_unique",
           "nullsNotDistinct": false,
-          "columns": ["name"]
+          "columns": [
+            "name"
+          ]
         }
       },
       "policies": {},
@@ -547,18 +618,26 @@
           "name": "user_quiz_attempts_user_id_users_id_fk",
           "tableFrom": "user_quiz_attempts",
           "tableTo": "users",
-          "columnsFrom": ["user_id"],
-          "columnsTo": ["id"],
-          "onDelete": "no action",
+          "columnsFrom": [
+            "user_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
           "onUpdate": "no action"
         },
         "user_quiz_attempts_chapter_id_chapters_id_fk": {
           "name": "user_quiz_attempts_chapter_id_chapters_id_fk",
           "tableFrom": "user_quiz_attempts",
           "tableTo": "chapters",
-          "columnsFrom": ["chapter_id"],
-          "columnsTo": ["id"],
-          "onDelete": "no action",
+          "columnsFrom": [
+            "chapter_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
           "onUpdate": "no action"
         }
       },
@@ -619,7 +698,9 @@
         "users_email_unique": {
           "name": "users_email_unique",
           "nullsNotDistinct": false,
-          "columns": ["email"]
+          "columns": [
+            "email"
+          ]
         }
       },
       "policies": {},
@@ -631,22 +712,41 @@
     "public.course_level": {
       "name": "course_level",
       "schema": "public",
-      "values": ["A1", "A2", "B1", "B2", "C1", "C2"]
+      "values": [
+        "A1",
+        "A2",
+        "B1",
+        "B2",
+        "C1",
+        "C2"
+      ]
     },
     "public.course_publish_status": {
       "name": "course_publish_status",
       "schema": "public",
-      "values": ["draft", "published", "unpublished"]
+      "values": [
+        "draft",
+        "published",
+        "unpublished"
+      ]
     },
     "public.course_status": {
       "name": "course_status",
       "schema": "public",
-      "values": ["in_progress", "completed", "abandoned"]
+      "values": [
+        "in_progress",
+        "completed",
+        "abandoned"
+      ]
     },
     "public.user_role": {
       "name": "user_role",
       "schema": "public",
-      "values": ["student", "tutor", "admin"]
+      "values": [
+        "student",
+        "tutor",
+        "admin"
+      ]
     }
   },
   "schemas": {},

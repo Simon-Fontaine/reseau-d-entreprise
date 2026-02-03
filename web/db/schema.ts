@@ -59,7 +59,6 @@ export const courses = pgTable("courses", {
   themeId: uuid("theme_id").references(() => themes.id),
   tutorId: uuid("tutor_id").references(() => users.id, { onDelete: "cascade" }),
   description: text("description"),
-  imageUrl: varchar("image_url", { length: 255 }),
   estimatedDuration: integer("estimated_duration"),
   emoji: text("emoji"),
   publishStatus: coursePublishStatusEnum("publish_status")
@@ -100,6 +99,10 @@ export const chatMessages = pgTable("chat_messages", {
   userId: uuid("user_id").references(() => users.id, { onDelete: "cascade" }),
   messageContent: text("message_content").notNull(),
   sentAt: timestamp("sent_at").defaultNow(),
+  recipientId: uuid("recipient_id").references(() => users.id, {
+    onDelete: "cascade",
+  }),
+  readAt: timestamp("read_at"),
 });
 
 export const quizQuestions = pgTable("quiz_questions", {
@@ -191,6 +194,12 @@ export const chatMessagesRelations = relations(chatMessages, ({ one }) => ({
   user: one(users, {
     fields: [chatMessages.userId],
     references: [users.id],
+    relationName: "sender",
+  }),
+  recipient: one(users, {
+    fields: [chatMessages.recipientId],
+    references: [users.id],
+    relationName: "recipient",
   }),
 }));
 
@@ -215,6 +224,11 @@ export const chapterCompletionsRelations = relations(
   }),
 );
 
+export const usersRelations = relations(users, ({ many }) => ({
+  sentMessages: many(chatMessages, { relationName: "sender" }),
+  receivedMessages: many(chatMessages, { relationName: "recipient" }),
+}));
+
 export const db = drizzle(process.env.DATABASE_URL || "", {
   schema: {
     users,
@@ -234,5 +248,6 @@ export const db = drizzle(process.env.DATABASE_URL || "", {
     chatMessagesRelations,
     quizOptionsRelations,
     chapterCompletionsRelations,
+    usersRelations,
   },
 });

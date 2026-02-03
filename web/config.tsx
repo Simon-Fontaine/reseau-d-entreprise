@@ -76,6 +76,12 @@ export const STUDENT_DASHBOARD_NAVIGATION = [
     items: [],
   },
   {
+    title: "Messages",
+    href: "/dashboard/student/messages",
+    icon: MessageSquare,
+    items: [],
+  },
+  {
     title: "Settings",
     href: "/dashboard/settings",
     icon: Settings,

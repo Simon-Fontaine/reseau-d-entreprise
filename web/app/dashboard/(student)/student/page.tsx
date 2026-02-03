@@ -105,8 +105,29 @@ export default async function StudentDashboardPage() {
   const totalQuizAttempts = quizAttempts.length;
 
   // Calculate courses in progress vs completed
-  const _coursesInProgress = enrolled.filter((e) => e.status === "in_progress");
+  const coursesInProgress = enrolled.filter((e) => e.status === "in_progress");
   const coursesCompleted = enrolled.filter((e) => e.status === "completed");
+
+  const totalActiveCourses = coursesInProgress.length;
+
+  const totalLearningHours = Math.round(
+    enrolled.reduce((sum, e) => sum + (e.course?.estimatedDuration ?? 0), 0) /
+      60,
+  );
+
+  // Calculate average progress across all enrolled courses
+  let totalProgressSum = 0;
+  enrolled.forEach((e) => {
+    if (!e.course) return;
+    const courseId = e.course.id;
+    const total = courseChapterCounts.get(courseId) ?? 0;
+    const completed = completedByCourseId[courseId] ?? 0;
+    const progress = total > 0 ? (completed / total) * 100 : 0;
+    totalProgressSum += progress;
+  });
+
+  const averageProgress =
+    enrolled.length > 0 ? Math.round(totalProgressSum / enrolled.length) : 0;
 
   // Get courses with progress info for display
   const coursesWithProgress = enrolled
@@ -138,7 +159,7 @@ export default async function StudentDashboardPage() {
       // Sort by in-progress first, then by progress percentage
       if (a?.status === "in_progress" && b?.status !== "in_progress") return -1;
       if (a?.status !== "in_progress" && b?.status === "in_progress") return 1;
-      return b?.progress - a?.progress;
+      return (b?.progress ?? 0) - (a?.progress ?? 0);
     })
     .slice(0, 4);
 
@@ -389,6 +410,38 @@ export default async function StudentDashboardPage() {
           </CardContent>
         </Card>
       </div>
+
+      {/* Quick Stats Summary */}
+      <Card>
+        <CardContent className="pt-6">
+          <div className="grid gap-6 sm:grid-cols-3">
+            <div className="text-center">
+              <div className="text-3xl font-bold text-primary">
+                {totalActiveCourses}
+              </div>
+              <p className="text-sm text-muted-foreground mt-1">
+                Active courses
+              </p>
+            </div>
+            <div className="text-center border-x border-border">
+              <div className="text-3xl font-bold text-primary">
+                {averageProgress}%
+              </div>
+              <p className="text-sm text-muted-foreground mt-1">
+                Average progress
+              </p>
+            </div>
+            <div className="text-center">
+              <div className="text-3xl font-bold text-primary">
+                {totalLearningHours}
+              </div>
+              <p className="text-sm text-muted-foreground mt-1">
+                Total hours of learning
+              </p>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
     </div>
   );
 }

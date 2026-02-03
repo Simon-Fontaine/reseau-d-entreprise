@@ -199,32 +199,6 @@ export function TutorCourseForm({
               )}
             </div>
             <div className="space-y-2">
-              <Label htmlFor="emoji">Emoji</Label>
-              <Input
-                id="emoji"
-                name="emoji"
-                defaultValue={defaultValues?.emoji ?? ""}
-              />
-              {state?.errors?.emoji && (
-                <p className="text-[0.8rem] font-medium text-destructive">
-                  {state.errors.emoji.join(", ")}
-                </p>
-              )}
-            </div>
-            <div className="space-y-2">
-              <Label htmlFor="imageUrl">Image URL</Label>
-              <Input
-                id="imageUrl"
-                name="imageUrl"
-                defaultValue={defaultValues?.imageUrl ?? ""}
-              />
-              {state?.errors?.imageUrl && (
-                <p className="text-[0.8rem] font-medium text-destructive">
-                  {state.errors.imageUrl.join(", ")}
-                </p>
-              )}
-            </div>
-            <div className="space-y-2">
               <Label htmlFor="publishStatus">Publish status</Label>
               <select
                 id="publishStatus"
@@ -241,6 +215,19 @@ export function TutorCourseForm({
               {state?.errors?.publishStatus && (
                 <p className="text-[0.8rem] font-medium text-destructive">
                   {state.errors.publishStatus.join(", ")}
+                </p>
+              )}
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="emoji">Emoji</Label>
+              <Input
+                id="emoji"
+                name="emoji"
+                defaultValue={defaultValues?.emoji ?? ""}
+              />
+              {state?.errors?.emoji && (
+                <p className="text-[0.8rem] font-medium text-destructive">
+                  {state.errors.emoji.join(", ")}
                 </p>
               )}
             </div>

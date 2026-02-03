@@ -87,7 +87,6 @@ export async function createTutorCourse(
       themeId,
       estimatedDuration,
       emoji,
-      imageUrl,
       publishStatus,
     } = validated.data;
 
@@ -102,7 +101,6 @@ export async function createTutorCourse(
         tutorId: tutor.id,
         estimatedDuration: parseEstimatedDuration(estimatedDuration),
         emoji: emoji || null,
-        imageUrl: imageUrl || null,
         publishStatus,
         publishedAt: publishStatus === "published" ? new Date() : null,
         updatedAt: new Date(),
@@ -161,7 +159,6 @@ export async function updateTutorCourse(
       themeId,
       estimatedDuration,
       emoji,
-      imageUrl,
       publishStatus,
     } = validated.data;
 
@@ -175,7 +172,6 @@ export async function updateTutorCourse(
         themeId: themeId || null,
         estimatedDuration: parseEstimatedDuration(estimatedDuration),
         emoji: emoji || null,
-        imageUrl: imageUrl || null,
         publishStatus,
         publishedAt: publishStatus === "published" ? new Date() : null,
         updatedAt: new Date(),
