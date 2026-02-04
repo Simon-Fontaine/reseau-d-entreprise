@@ -44,9 +44,9 @@ jobs:
           key: ${{ secrets.SERVER_SSH_KEY }}
           script: |
             cd ~/reseau
-            echo "${{ secrets.REGISTRY_PASSWORD }}" | sudo docker login ${{ gitea.server_url }} -u ${{ secrets.REGISTRY_USERNAME }} --password-stdin
+            echo "${{ secrets.REGISTRY_PASSWORD }}" | docker login ${{ gitea.server_url }} -u ${{ secrets.REGISTRY_USERNAME }} --password-stdin
             REPO_LOWER=$(echo "${{ gitea.repository }}" | tr '[:upper:]' '[:lower:]')
             IMAGE_URL="gitea.intranet.advancedyapping.be/$REPO_LOWER:latest"
-            sudo docker pull $IMAGE_URL
-            sudo docker compose up -d --no-deps app
-            sudo docker image prune -f
+            docker pull $IMAGE_URL
+            docker compose up -d --no-deps app
+            docker image prune -f
