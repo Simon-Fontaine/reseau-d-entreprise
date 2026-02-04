@@ -6,7 +6,7 @@ import {
   Clock,
   Eye,
   Globe,
-  MessageSquare,
+
   Settings,
 } from "lucide-react";
 import Link from "next/link";
@@ -78,7 +78,7 @@ export default async function TutorCourseManagePage({
     course.chapters.length === 0
       ? 1
       : Math.max(...course.chapters.map((chapter) => chapter.orderIndex ?? 1)) +
-        1;
+      1;
 
   // Calculate course stats
   const totalQuestions = course.chapters.reduce(
@@ -235,10 +235,7 @@ export default async function TutorCourseManagePage({
             <Settings className="mr-2 h-4 w-4" />
             Course Settings
           </TabsTrigger>
-          <TabsTrigger value="messages">
-            <MessageSquare className="mr-2 h-4 w-4" />
-            Messages
-          </TabsTrigger>
+
         </TabsList>
 
         {/* Chapters & Quizzes Tab */}
@@ -304,29 +301,7 @@ export default async function TutorCourseManagePage({
           )}
         </TabsContent>
 
-        {/* Messages Tab */}
-        <TabsContent value="messages" className="max-w-3xl">
-          <div className="space-y-6">
-            <div>
-              <h2 className="text-lg font-semibold">Course Chat</h2>
-              <p className="text-sm text-muted-foreground">
-                Communicate with students enrolled in this course.
-              </p>
-            </div>
-            <div className="space-y-6">
-              <div>
-                <h2 className="text-lg font-semibold">Course Chat</h2>
-                <p className="text-sm text-muted-foreground">
-                  Communicate with students enrolled in this course from the
-                  dedicated messages page.
-                </p>
-              </div>
-              <Button asChild>
-                <Link href="/dashboard/tutor/messages">Go to Messages</Link>
-              </Button>
-            </div>
-          </div>
-        </TabsContent>
+
 
         {/* Settings Tab */}
         <TabsContent value="settings" className="space-y-6">
