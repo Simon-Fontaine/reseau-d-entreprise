@@ -166,8 +166,13 @@ async function main() {
       .values(themesData)
       .returning();
 
-    const getThemeId = (name: string) =>
-      insertedThemes.find((t) => t.name === name)?.id;
+    const getThemeId = (name: string) => {
+      const theme = insertedThemes.find((t) => t.name === name);
+      if (!theme) {
+        throw new Error(`Theme "${name}" not found`);
+      }
+      return theme.id;
+    };
 
     // -------------------------------------------------------------------------
     // 6. COURSE INJECTION LOGIC
