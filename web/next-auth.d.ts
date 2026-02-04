@@ -1,23 +1,29 @@
 import type { DefaultSession } from "next-auth";
-import { InferSelectModel } from "drizzle-orm";
-import { users } from "@/db/schema";
 
 declare module "next-auth" {
-  interface User
-    extends Omit<InferSelectModel<typeof users>, "passwordHash" | "id"> {
+  interface User {
     id: string;
+    email: string;
+    fullName: string;
+    role: "student" | "tutor" | "admin" | null;
+    bio: string | null;
     emailVerified?: Date | null;
   }
 
   interface Session extends DefaultSession {
     user: User;
+    error?: string;
   }
 }
 
 declare module "next-auth/jwt" {
-  import type { User } from "next-auth";
-
   interface JWT {
-    user?: User;
+    id?: string | null;
+    email?: string;
+    fullName?: string;
+    role?: "student" | "tutor" | "admin" | null;
+    bio?: string | null;
+    lastDbCheck?: number;
+    error?: string;
   }
 }

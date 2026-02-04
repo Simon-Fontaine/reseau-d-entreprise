@@ -4,6 +4,7 @@ import * as argon2 from "argon2";
 import { eq } from "drizzle-orm";
 import { revalidatePath } from "next/cache";
 import type { z } from "zod";
+import { ARGON2_OPTIONS } from "@/auth";
 import { db, users } from "@/db/schema";
 import { registerSchema } from "@/validations/auth";
 
@@ -46,7 +47,7 @@ export async function registerAction(
       };
     }
 
-    const passwordHash = await argon2.hash(password);
+    const passwordHash = await argon2.hash(password, ARGON2_OPTIONS);
 
     await db.insert(users).values({
       email,

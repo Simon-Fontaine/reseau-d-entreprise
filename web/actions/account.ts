@@ -4,7 +4,7 @@ import * as argon2 from "argon2";
 import { eq } from "drizzle-orm";
 import { revalidatePath } from "next/cache";
 import type { z } from "zod";
-import { auth } from "@/auth";
+import { ARGON2_OPTIONS, auth } from "@/auth";
 import { db, users } from "@/db/schema";
 import {
   updateBioSchema,
@@ -168,7 +168,7 @@ export async function updatePassword(
       };
     }
 
-    const newPasswordHash = await argon2.hash(newPassword);
+    const newPasswordHash = await argon2.hash(newPassword, ARGON2_OPTIONS);
 
     await db
       .update(users)
