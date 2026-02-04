@@ -1,4 +1,4 @@
-import { SeedCourseData } from "../seeds";
+import type { SeedCourseData } from "../seeds";
 
 export const frenchCourse: SeedCourseData = {
   title: "French for Beginners: Foundation & Survival",
@@ -43,7 +43,8 @@ English uses "You" for everyone. French has two:
       `,
       quizzes: [
         {
-          question: "You enter a bakery at 10:00 AM. What is the first thing you say?",
+          question:
+            "You enter a bakery at 10:00 AM. What is the first thing you say?",
           points: 10,
           options: [
             { text: "Un croissant, s'il vous plaît", isCorrect: false },
@@ -53,7 +54,8 @@ English uses "You" for everyone. French has two:
           ],
         },
         {
-          question: "You are speaking to a police officer. Which pronoun do you use?",
+          question:
+            "You are speaking to a police officer. Which pronoun do you use?",
           points: 10,
           options: [
             { text: "Tu", isCorrect: false },
@@ -276,7 +278,8 @@ Ordering food requires a special type of grammar called the **Partitive Article*
       `,
       quizzes: [
         {
-          question: "Select the correct article: 'Je voudrais ___ café.' (Masculine)",
+          question:
+            "Select the correct article: 'Je voudrais ___ café.' (Masculine)",
           points: 10,
           options: [
             { text: "de la", isCorrect: false },
@@ -294,7 +297,8 @@ Ordering food requires a special type of grammar called the **Partitive Article*
           ],
         },
         {
-          question: "Negative rule: 'Je n'ai pas ___ argent.' (I have no money)",
+          question:
+            "Negative rule: 'Je n'ai pas ___ argent.' (I have no money)",
           points: 10,
           options: [
             { text: "de l'", isCorrect: false },

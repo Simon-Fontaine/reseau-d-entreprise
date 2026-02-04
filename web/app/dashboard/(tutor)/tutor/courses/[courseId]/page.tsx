@@ -6,7 +6,6 @@ import {
   Clock,
   Eye,
   Globe,
-
   Settings,
 } from "lucide-react";
 import Link from "next/link";
@@ -78,7 +77,7 @@ export default async function TutorCourseManagePage({
     course.chapters.length === 0
       ? 1
       : Math.max(...course.chapters.map((chapter) => chapter.orderIndex ?? 1)) +
-      1;
+        1;
 
   // Calculate course stats
   const totalQuestions = course.chapters.reduce(
@@ -235,7 +234,6 @@ export default async function TutorCourseManagePage({
             <Settings className="mr-2 h-4 w-4" />
             Course Settings
           </TabsTrigger>
-
         </TabsList>
 
         {/* Chapters & Quizzes Tab */}
@@ -300,8 +298,6 @@ export default async function TutorCourseManagePage({
             </div>
           )}
         </TabsContent>
-
-
 
         {/* Settings Tab */}
         <TabsContent value="settings" className="space-y-6">

@@ -1,4 +1,4 @@
-import { SeedCourseData } from "../seeds";
+import type { SeedCourseData } from "../seeds";
 
 export const spanishCourse: SeedCourseData = {
   title: "Spanish for Beginners: Hola to Hablando",
@@ -154,7 +154,8 @@ Think **PLACE**:
       `,
       quizzes: [
         {
-          question: "To talk about your job (Occupation), which verb do you use?",
+          question:
+            "To talk about your job (Occupation), which verb do you use?",
           points: 10,
           options: [
             { text: "Estar", isCorrect: false },

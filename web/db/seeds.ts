@@ -52,9 +52,9 @@ export type SeedCourseData = {
 // =============================================================================
 import { frenchCourse } from "./courses/french";
 import { germanCourse } from "./courses/german";
-import { spanishCourse } from "./courses/spanish";
 import { japaneseCourse } from "./courses/japanese";
 import { klingonCourse } from "./courses/klingon";
+import { spanishCourse } from "./courses/spanish";
 
 // Database Setup
 const pool = new Pool({ connectionString: process.env.DATABASE_URL });
@@ -96,48 +96,49 @@ async function main() {
       })
       .returning();
 
-    const [tutorSarah, tutorJulien, tutorHans, tutorAiko, tutorMartok] = await db
-      .insert(users)
-      .values([
-        {
-          fullName: "Claire Dubois", // French
-          email: "claire@academy.com",
-          passwordHash: password,
-          role: "tutor",
-          bio: "Native French speaker with a passion for literature and baguettes.",
-        },
-        {
-          fullName: "Sofía Martínez", // Spanish
-          email: "sofia@academy.com",
-          passwordHash: password,
-          role: "tutor",
-          bio: "Travel lover and Spanish conversation expert.",
-        },
-        {
-          fullName: "Hans Müller", // German
-          email: "hans@academy.com",
-          passwordHash: password,
-          role: "tutor",
-          bio: "Technical German instructor and engineer.",
-        },
-        {
-          fullName: "Yuki Tanaka", // Japanese
-          email: "yuki@academy.com",
-          passwordHash: password,
-          role: "tutor",
-          bio: "Specializing in Japanese grammar and Keigo (polite language).",
-        },
-        {
-          fullName: "Commander Korr", // Klingon
-          email: "korr@academy.com",
-          passwordHash: password,
-          role: "tutor",
-          bio: "Teaching the language of warriors. Qapla'!",
-        },
-      ])
-      .returning();
+    const [tutorSarah, tutorJulien, tutorHans, tutorAiko, tutorMartok] =
+      await db
+        .insert(users)
+        .values([
+          {
+            fullName: "Claire Dubois", // French
+            email: "claire@academy.com",
+            passwordHash: password,
+            role: "tutor",
+            bio: "Native French speaker with a passion for literature and baguettes.",
+          },
+          {
+            fullName: "Sofía Martínez", // Spanish
+            email: "sofia@academy.com",
+            passwordHash: password,
+            role: "tutor",
+            bio: "Travel lover and Spanish conversation expert.",
+          },
+          {
+            fullName: "Hans Müller", // German
+            email: "hans@academy.com",
+            passwordHash: password,
+            role: "tutor",
+            bio: "Technical German instructor and engineer.",
+          },
+          {
+            fullName: "Yuki Tanaka", // Japanese
+            email: "yuki@academy.com",
+            passwordHash: password,
+            role: "tutor",
+            bio: "Specializing in Japanese grammar and Keigo (polite language).",
+          },
+          {
+            fullName: "Commander Korr", // Klingon
+            email: "korr@academy.com",
+            passwordHash: password,
+            role: "tutor",
+            bio: "Teaching the language of warriors. Qapla'!",
+          },
+        ])
+        .returning();
 
-    const [student] = await db
+    const [_student] = await db
       .insert(users)
       .values({
         fullName: "Mike Student",
@@ -165,16 +166,17 @@ async function main() {
       .values(themesData)
       .returning();
 
-    const getThemeId = (name: string) => insertedThemes.find((t) => t.name === name)!.id;
+    const getThemeId = (name: string) =>
+      insertedThemes.find((t) => t.name === name)?.id;
 
     // -------------------------------------------------------------------------
     // 6. COURSE INJECTION LOGIC
     // -------------------------------------------------------------------------
-    
+
     const seedCourse = async (
       data: SeedCourseData,
       themeId: string,
-      tutorId: string
+      tutorId: string,
     ) => {
       console.log(`📘 Seeding Course: ${data.title}...`);
 
@@ -220,7 +222,7 @@ async function main() {
               questionId: dbQuiz.id,
               optionText: opt.text,
               isCorrect: opt.isCorrect,
-            }))
+            })),
           );
         }
       }

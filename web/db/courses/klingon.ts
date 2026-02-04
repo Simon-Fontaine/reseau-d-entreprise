@@ -1,4 +1,4 @@
-import { SeedCourseData } from "../seeds";
+import type { SeedCourseData } from "../seeds";
 
 export const klingonCourse: SeedCourseData = {
   title: "Klingon: The Warrior's Tongue",
@@ -104,7 +104,8 @@ The focus is on the target, not the actor.
           ],
         },
         {
-          question: "If you want to say 'The dog bites the man', which word comes first?",
+          question:
+            "If you want to say 'The dog bites the man', which word comes first?",
           points: 10,
           options: [
             { text: "The man (Object)", isCorrect: true },
@@ -162,7 +163,8 @@ Assuming the object is singular (him/her/it):
           ],
         },
         {
-          question: "If there is no prefix on the verb, who is usually the subject?",
+          question:
+            "If there is no prefix on the verb, who is usually the subject?",
           points: 10,
           options: [
             { text: "I", isCorrect: false },
@@ -212,7 +214,8 @@ Suffix: **-mey**
           ],
         },
         {
-          question: "Is a 'targh' (Animal) considered a being capable of speech?",
+          question:
+            "Is a 'targh' (Animal) considered a being capable of speech?",
           points: 10,
           options: [
             { text: "Yes", isCorrect: false },

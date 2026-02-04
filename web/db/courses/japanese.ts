@@ -1,4 +1,4 @@
-import { SeedCourseData } from "../seeds";
+import type { SeedCourseData } from "../seeds";
 
 export const japaneseCourse: SeedCourseData = {
   title: "Japanese: Particles & Politeness",

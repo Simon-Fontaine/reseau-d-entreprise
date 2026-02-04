@@ -1,4 +1,4 @@
-import { SeedCourseData } from "../seeds";
+import type { SeedCourseData } from "../seeds";
 
 export const germanCourse: SeedCourseData = {
   title: "German: Logic & Structure",
@@ -265,7 +265,8 @@ Feminine (Die) and Neutral (Das) **do not change**.
           ],
         },
         {
-          question: "Fill in the blank: 'Ich habe ___ Hund (m).' (I have a dog)",
+          question:
+            "Fill in the blank: 'Ich habe ___ Hund (m).' (I have a dog)",
           points: 10,
           options: [
             { text: "einen", isCorrect: true },
