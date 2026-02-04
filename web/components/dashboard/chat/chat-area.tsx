@@ -3,7 +3,7 @@
 import { ArrowLeft, Check, CheckCheck, Send } from "lucide-react";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { markMessagesAsRead } from "@/actions/chat";
-import { Avatar, AvatarFallback } from "@/components/ui/avatar";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -147,6 +147,12 @@ export function ChatArea({
           </Button>
         )}
         <Avatar className="h-8 w-8">
+          <AvatarImage
+            src={`https://api.dicebear.com/9.x/avataaars/png?seed=${encodeURIComponent(
+              recipientName,
+            )}`}
+            alt={recipientName}
+          />
           <AvatarFallback>{recipientName[0]}</AvatarFallback>
         </Avatar>
         <CardTitle className="text-sm font-medium">{recipientName}</CardTitle>
@@ -176,6 +182,12 @@ export function ChatArea({
                     <div className="w-8 shrink-0">
                       {showAvatar && (
                         <Avatar className="h-8 w-8">
+                          <AvatarImage
+                            src={`https://api.dicebear.com/9.x/avataaars/png?seed=${encodeURIComponent(
+                              msg.user?.fullName || "User",
+                            )}`}
+                            alt={msg.user?.fullName || "User"}
+                          />
                           <AvatarFallback>
                             {msg.user?.fullName?.[0]}
                           </AvatarFallback>

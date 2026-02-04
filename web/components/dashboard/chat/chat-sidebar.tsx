@@ -2,7 +2,7 @@
 
 import { Search } from "lucide-react";
 import { useState } from "react";
-import { Avatar, AvatarFallback } from "@/components/ui/avatar";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { ScrollArea } from "@/components/ui/scroll-area";
@@ -68,6 +68,12 @@ export function ChatSidebar({
                   )}
                 >
                   <Avatar className="h-10 w-10 border">
+                    <AvatarImage
+                      src={`https://api.dicebear.com/9.x/avataaars/png?seed=${encodeURIComponent(
+                        conv.name,
+                      )}`}
+                      alt={conv.name}
+                    />
                     <AvatarFallback>{conv.name[0]}</AvatarFallback>
                   </Avatar>
                   <div className="flex-1 overflow-hidden">

@@ -40,7 +40,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
         token.lastDbCheck = Date.now();
       }
 
-      const lastCheck = token.lastDbCheck ?? 0;
+      const lastCheck = (token.lastDbCheck ?? 0) as number;
       const shouldRevalidate =
         token.id &&
         (Date.now() - lastCheck > DB_REVALIDATION_INTERVAL * 1000 ||
