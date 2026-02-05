@@ -1,6 +1,6 @@
-import { db } from "@/db/schema";
 import { sql } from "drizzle-orm";
 import { NextResponse } from "next/server";
+import { db } from "@/db/schema";
 
 export const dynamic = "force-dynamic";
 
@@ -17,7 +17,7 @@ export async function GET() {
   try {
     await db.execute(sql`SELECT 1`);
     health.checks.database = "healthy";
-  } catch (error) {
+  } catch (_error) {
     health.status = "unhealthy";
     health.checks.database = "unhealthy";
 
