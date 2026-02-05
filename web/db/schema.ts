@@ -12,6 +12,7 @@ import {
   uuid,
   varchar,
 } from "drizzle-orm/pg-core";
+import { Pool } from "pg";
 
 export const userRoleEnum = pgEnum("user_role", ["student", "tutor", "admin"]);
 
@@ -229,7 +230,19 @@ export const usersRelations = relations(users, ({ many }) => ({
   receivedMessages: many(chatMessages, { relationName: "recipient" }),
 }));
 
-export const db = drizzle(process.env.DATABASE_URL || "", {
+const connectionConfig = process.env.DATABASE_URL
+  ? { connectionString: process.env.DATABASE_URL }
+  : {
+      host: process.env.DB_HOST || "localhost",
+      port: parseInt(process.env.DB_PORT || "5432", 10),
+      user: process.env.DB_USER,
+      password: process.env.DB_PASSWORD,
+      database: process.env.DB_NAME,
+    };
+
+const pool = new Pool(connectionConfig);
+
+export const db = drizzle(pool, {
   schema: {
     users,
     themes,

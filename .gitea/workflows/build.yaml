@@ -74,6 +74,8 @@ jobs:
           load: true
           tags: ${{ env.IMAGE_NAME }}:latest
           provenance: false
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
 
       - name: Save Image
         run: |
