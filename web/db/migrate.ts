@@ -3,6 +3,7 @@ import { sql } from "drizzle-orm";
 import { drizzle } from "drizzle-orm/node-postgres";
 import { migrate } from "drizzle-orm/node-postgres/migrator";
 import { Pool } from "pg";
+import { seedDatabase, seedPool } from "./seeds";
 
 const connectionConfig = process.env.DATABASE_URL
   ? { connectionString: process.env.DATABASE_URL }
@@ -39,7 +40,6 @@ async function runMigrations() {
 
     if (count === 0) {
       console.log("📭 Database is empty, running seeds...");
-      const { seedDatabase, seedPool } = await import("./seeds");
       await seedDatabase();
       await seedPool.end();
     } else {
