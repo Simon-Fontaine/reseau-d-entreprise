@@ -1,0 +1,24 @@
+services:
+  backup_worker:
+    image: postgres:16-alpine
+    container_name: backup_worker
+    entrypoint: |
+      /bin/sh -c '
+        echo "Starting backup loop..."
+        while true; do
+          DATE=$(date +%Y%m%d_%H%M%S)
+          echo "Backing up DMZ DB at $DATE..."
+          PGPASSWORD=$DB_PASSWORD pg_dump -h $DMZ_HOST_IP -U $DB_USER -d $DB_NAME > /backups/db_$DATE.sql
+          find /backups -type f -mtime +7 -delete
+          echo "Backup done. Sleeping for 12 hours..."
+          sleep 43200
+        done
+      '
+    environment:
+      - DB_USER=${DB_USER}
+      - DB_PASSWORD=${DB_PASSWORD}
+      - DB_NAME=${DB_NAME}
+      - DMZ_HOST_IP=${DMZ_HOST_IP}
+    volumes:
+      - ./backups:/backups
+    restart: unless-stopped
