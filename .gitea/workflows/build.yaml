@@ -22,7 +22,6 @@ on:
 
 env:
   REGISTRY: gitea.intranet.advancedyapping.be
-  IMAGE_NAME: ${{ gitea.repository }}
 
 jobs:
   # ===========================================================================
@@ -76,14 +75,19 @@ jobs:
           username: ${{ secrets.REGISTRY_USERNAME }}
           password: ${{ secrets.REGISTRY_PASSWORD }}
 
+      - name: Set lowercase image name
+        run: echo "IMAGE_NAME_LC=${IMAGE_NAME,,}" >> $GITHUB_ENV
+        env:
+          IMAGE_NAME: ${{ gitea.repository }}
+
       - name: Build & Push
         uses: docker/build-push-action@v5
         with:
           context: ./web
           push: true
           tags: |
-            ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest
-            ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ gitea.sha }}
-          cache-from: type=registry,ref=${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:cache
-          cache-to: type=registry,ref=${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:cache,mode=max
+            ${{ env.REGISTRY }}/${{ env.IMAGE_NAME_LC }}:latest
+            ${{ env.REGISTRY }}/${{ env.IMAGE_NAME_LC }}:${{ gitea.sha }}
+          cache-from: type=registry,ref=${{ env.REGISTRY }}/${{ env.IMAGE_NAME_LC }}:cache
+          cache-to: type=registry,ref=${{ env.REGISTRY }}/${{ env.IMAGE_NAME_LC }}:cache,mode=max
           provenance: false
