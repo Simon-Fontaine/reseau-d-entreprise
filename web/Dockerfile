@@ -32,8 +32,8 @@ COPY --from=deps /app/node_modules ./node_modules
 COPY . .
 ENV NEXT_TELEMETRY_DISABLED=1
 RUN pnpm run build
-# Compile server.ts, db/schema.ts, and db/migrate.ts to JavaScript
-RUN npx tsc server.ts db/schema.ts db/migrate.ts --outDir dist --esModuleInterop --module NodeNext --moduleResolution NodeNext --skipLibCheck --target ES2022
+# Compile server, db files, and seeds to JavaScript
+RUN npx tsc server.ts db/schema.ts db/migrate.ts db/seeds.ts db/courses/*.ts --outDir dist --esModuleInterop --module NodeNext --moduleResolution NodeNext --skipLibCheck --target ES2022
 
 # -----------------------------------------------------------------------------
 # Runner (Production)
