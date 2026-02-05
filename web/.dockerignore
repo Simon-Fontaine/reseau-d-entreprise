@@ -54,9 +54,6 @@ Thumbs.db
 # TypeScript build info
 *.tsbuildinfo
 
-# Drizzle meta (keep migrations, exclude meta)
-drizzle/meta/
-
 # Misc
 .vercel/
 *.pem
