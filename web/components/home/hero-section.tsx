@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 export function HeroSection() {
   return (
     <section className="relative overflow-hidden py-16 md:py-24 lg:py-32">
-      <div className="container mx-auto relative z-10 flex flex-col items-center text-center">
+      <div className="container mx-auto relative z-10 flex flex-col items-center text-center px-4 md:px-6">
         <Badge variant="secondary" className="mb-6 backdrop-blur-sm">
           <Sparkles className="mr-2 h-3.5 w-3.5 fill-primary text-primary" />
           New courses available

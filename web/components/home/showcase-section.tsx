@@ -3,7 +3,7 @@ import { Badge } from "@/components/ui/badge";
 
 export function ShowcaseSection() {
   return (
-    <section className="container mx-auto py-16 md:py-24">
+    <section className="container mx-auto py-16 md:py-24 px-4 md:px-6">
       <div className="flex flex-col items-center gap-4 text-center">
         <Badge variant="outline">Interactive Dashboard</Badge>
         <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl">

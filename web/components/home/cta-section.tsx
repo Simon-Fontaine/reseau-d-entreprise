@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 export function CTASection() {
   return (
     <section className="relative overflow-hidden py-24">
-      <div className="container mx-auto flex flex-col items-center text-center">
+      <div className="container mx-auto flex flex-col items-center text-center px-4 md:px-6">
         <div className="mx-auto mb-8 flex h-16 w-16 items-center justify-center rounded-2xl bg-primary text-primary-foreground shadow-lg">
           <GraduationCapIcon className="h-8 w-8" />
         </div>
