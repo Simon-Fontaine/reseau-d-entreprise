@@ -204,11 +204,15 @@ export function ChatArea({
                         : "bg-zinc-100 dark:bg-zinc-800 text-foreground rounded-tl-none",
                     )}
                   >
-                    <p className="mb-1 leading-relaxed">{msg.messageContent}</p>
+                    <p className="mb-1 leading-relaxed whitespace-pre-wrap break-all">
+                      {msg.messageContent}
+                    </p>
                     <div
                       className={cn(
-                        "flex items-center justify-end gap-1 text-[10px]",
-                        isMe ? "opacity-90" : "text-muted-foreground",
+                        "flex items-center gap-1 text-[10px]",
+                        isMe
+                          ? "justify-end opacity-90"
+                          : "justify-start text-muted-foreground",
                       )}
                     >
                       <span>

@@ -60,7 +60,7 @@ export function ChatSidebar({
                   key={`${conv.courseId}-${conv.id}`}
                   onClick={() => onSelect(conv.id, conv.courseId)}
                   className={cn(
-                    "flex items-start gap-3 p-3 rounded-lg text-left transition-colors",
+                    "flex items-start gap-3 p-3 rounded-lg text-left transition-colors w-full overflow-hidden",
                     "hover:bg-accent hover:text-accent-foreground",
                     selectedId === conv.id && selectedCourseId === conv.courseId
                       ? "bg-accent text-accent-foreground"
@@ -76,23 +76,30 @@ export function ChatSidebar({
                     />
                     <AvatarFallback>{conv.name[0]}</AvatarFallback>
                   </Avatar>
-                  <div className="flex-1 overflow-hidden">
-                    <div className="flex justify-between items-baseline mb-0.5">
+                  <div className="flex-1 min-w-0 overflow-hidden">
+                    <div className="flex justify-between items-baseline mb-1">
                       <span className="font-medium text-sm truncate">
                         {conv.name}
                       </span>
                       {conv.lastMessageAt && (
-                        <span className="text-[10px] text-muted-foreground shrink-0">
+                        <span className="text-[10px] text-muted-foreground shrink-0 ml-2">
                           {new Date(conv.lastMessageAt).toLocaleDateString()}
                         </span>
                       )}
                     </div>
-                    <p className="text-xs text-muted-foreground truncate">
-                      {conv.courseName}
-                    </p>
-                    {conv.lastMessage && (
-                      <p className="text-xs text-muted-foreground truncate mt-0.5">
+                    {conv.courseName && (
+                      <p className="text-[11px] font-medium text-muted-foreground/80 mb-0.5 flex items-start gap-1">
+                        <span className="w-1.5 h-1.5 rounded-full bg-primary/40 inline-block mt-[5px] shrink-0" />
+                        {conv.courseName}
+                      </p>
+                    )}
+                    {conv.lastMessage ? (
+                      <p className="text-xs text-foreground/80 line-clamp-1 break-all mt-1">
                         {conv.lastMessage}
+                      </p>
+                    ) : (
+                      <p className="text-xs text-muted-foreground/50 italic mt-1">
+                        No messages yet
                       </p>
                     )}
                   </div>

@@ -1,11 +1,12 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { getChatMessages } from "@/actions/chat";
 import { ChatArea } from "@/components/dashboard/chat/chat-area";
 import { ChatLayout } from "@/components/dashboard/chat/chat-layout";
 import { ChatSidebar } from "@/components/dashboard/chat/chat-sidebar";
 import type { Conversation, Message } from "@/components/dashboard/chat/types";
+import { socket } from "@/lib/socket";
 
 interface StudentMessagesClientProps {
   studentId: string;
@@ -39,6 +40,57 @@ export function StudentMessagesClient({
     const msgs = await getChatMessages(courseId, studentId, tutorId);
     setMessages(msgs);
   };
+
+  useEffect(() => {
+    if (!socket.connected) socket.connect();
+    socket.emit("join_user_room", studentId);
+
+    const onNewMessage = (msg: Message) => {
+      setConversations((prev) => {
+        const convIndex = prev.findIndex(
+          (c) =>
+            c.courseId === msg.courseId &&
+            c.id === (msg.userId === studentId ? msg.recipientId : msg.userId),
+        );
+
+        if (convIndex === -1) return prev;
+
+        const updatedConv = { ...prev[convIndex] };
+        updatedConv.lastMessage = msg.messageContent;
+        updatedConv.lastMessageAt = new Date(msg.sentAt);
+
+        // Update unread count if it's an incoming message and not the currently selected conversation
+        if (msg.userId !== studentId) {
+          const isCurrentChat =
+            selectedConv?.id === msg.userId &&
+            selectedConv?.courseId === msg.courseId;
+          if (!isCurrentChat) {
+            updatedConv.unreadCount += 1;
+          }
+        }
+
+        const newConversations = [...prev];
+        newConversations[convIndex] = updatedConv;
+
+        // Sort by last message time
+        return newConversations.sort((a, b) => {
+          const timeA = a.lastMessageAt
+            ? new Date(a.lastMessageAt).getTime()
+            : 0;
+          const timeB = b.lastMessageAt
+            ? new Date(b.lastMessageAt).getTime()
+            : 0;
+          return timeB - timeA;
+        });
+      });
+    };
+
+    socket.on("new_message", onNewMessage);
+
+    return () => {
+      socket.off("new_message", onNewMessage);
+    };
+  }, [studentId, selectedConv]);
 
   return (
     <ChatLayout
