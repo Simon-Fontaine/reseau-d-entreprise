@@ -13,6 +13,7 @@
     "fix": "biome check --write .",
     "db:generate": "drizzle-kit generate",
     "db:migrate": "drizzle-kit migrate",
+    "db:migrate:run": "tsx db/migrate.ts",
     "db:rollback": "drizzle-kit rollback",
     "db:studio": "drizzle-kit studio",
     "db:seed": "tsx db/seeds.ts"

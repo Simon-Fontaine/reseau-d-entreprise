@@ -1,34 +1,31 @@
+# =============================================================================
+# Local Development - Docker Compose
+# =============================================================================
+#
+# Start the database for local development:
+#   docker compose up -d
+#
+# Then in another terminal:
+#   pnpm dev
+# =============================================================================
+
 services:
   db:
     image: postgres:16-alpine
-    restart: unless-stopped
-    environment:
-      POSTGRES_USER: ${DB_USER:-postgres}
-      POSTGRES_PASSWORD: ${DB_PASSWORD:-postgres}
-      POSTGRES_DB: ${DB_NAME:-reseau}
+    container_name: web_dev_db
     ports:
       - "5432:5432"
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: web
     volumes:
-      - pgdata:/var/lib/postgresql/data
+      - devdata:/var/lib/postgresql/data
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U ${DB_USER:-postgres}"]
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
       interval: 5s
       timeout: 3s
       retries: 5
 
-  app:
-    build: .
-    restart: unless-stopped
-    ports:
-      - "3000:3000"
-    environment:
-      DATABASE_URL: postgresql://${DB_USER:-postgres}:${DB_PASSWORD:-postgres}@db:5432/${DB_NAME:-reseau}
-      AUTH_SECRET: ${AUTH_SECRET:?AUTH_SECRET is required}
-      AUTH_TRUST_HOST: "true"
-      AUTH_URL: ${AUTH_URL:-http://localhost:3000}
-    depends_on:
-      db:
-        condition: service_healthy
-
 volumes:
-  pgdata:
+  devdata:
