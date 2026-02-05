@@ -31,12 +31,16 @@ jobs:
   check:
     name: Lint & Type Check
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./web
     steps:
       - uses: actions/checkout@v4
 
       - uses: pnpm/action-setup@v2
         with:
           version: 9
+          run_install: false
 
       - uses: actions/setup-node@v4
         with:
@@ -44,10 +48,11 @@ jobs:
           cache: "pnpm"
           cache-dependency-path: web/pnpm-lock.yaml
 
-      - name: Install & Check
-        working-directory: ./web
+      - name: Install Dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Lint & Type Check
         run: |
-          pnpm install --frozen-lockfile
           pnpm check
           pnpm exec tsc --noEmit
 
