@@ -12,8 +12,8 @@ import type { MainNavItem, SidebarNavItem } from "@/types/nav";
 export const APP_CONFIG = {
   APP_NAME: "Advanced Yapping Academy",
   APP_DESCRIPTION: "Your gateway to mastering advanced yapping skills.",
-  APP_DOMAIN: "advancedyappingacademy.com",
-  APP_URL: "https://advancedyappingacademy.com",
+  APP_DOMAIN: "www.advancedyapping.be",
+  APP_URL: "https://www.advancedyapping.be",
 };
 
 export const APP_LOGO = (props: React.SVGProps<SVGSVGElement>) => (
