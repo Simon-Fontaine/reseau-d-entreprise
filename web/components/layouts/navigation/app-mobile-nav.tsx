@@ -1,0 +1,87 @@
+"use client";
+
+import { ExternalLinkIcon, MenuIcon } from "lucide-react";
+
+import Link from "next/link";
+import { useSession } from "next-auth/react";
+import { useState } from "react";
+import { Button } from "@/components/ui/button";
+import {
+  Drawer,
+  DrawerContent,
+  DrawerDescription,
+  DrawerHeader,
+  DrawerTitle,
+  DrawerTrigger,
+} from "@/components/ui/drawer";
+import { APP_CONFIG, APP_LOGO, APP_NAVIGATION } from "@/config";
+
+export function AppMobileNav() {
+  const [isOpen, setIsOpen] = useState(false);
+  const { data: session } = useSession();
+
+  return (
+    <Drawer open={isOpen} onOpenChange={setIsOpen}>
+      <DrawerTrigger asChild>
+        <Button
+          variant="ghost"
+          className="mr-2 h-8 w-8 px-0 text-base hover:bg-transparent focus-visible:bg-transparent focus-visible:ring-0 focus-visible:ring-offset-0 md:hidden"
+        >
+          <MenuIcon />
+          <span className="sr-only">Toggle Navigation Menu</span>
+        </Button>
+      </DrawerTrigger>
+      <DrawerContent className="max-h-[60svh] bg-muted/50 p-0 shadow-md backdrop-blur-md">
+        <DrawerHeader className="sr-only">
+          <DrawerTitle>Navigation Menu</DrawerTitle>
+          <DrawerDescription>Site navigation links</DrawerDescription>
+        </DrawerHeader>
+        <div className="overflow-auto p-6">
+          <div className="flex flex-col space-y-3">
+            <Link
+              href="/"
+              onClick={() => setIsOpen(false)}
+              className="flex items-center gap-2 text-base font-bold"
+            >
+              <APP_LOGO className="size-6 text-primary" />
+              {APP_CONFIG.APP_NAME}
+            </Link>
+            {session?.user ? (
+              <Link
+                href="/dashboard"
+                onClick={() => setIsOpen(false)}
+                className="text-base font-medium"
+              >
+                <div className="flex items-center gap-1">
+                  <span>Dashboard</span>
+                </div>
+              </Link>
+            ) : null}
+            {APP_NAVIGATION.map((item) =>
+              item.href && !item.disabled ? (
+                <Link
+                  key={item.title}
+                  href={item.href}
+                  onClick={() => setIsOpen(false)}
+                  className="text-base"
+                  target={item.external ? "_blank" : undefined}
+                  aria-label={item.title}
+                >
+                  <div className="flex items-center gap-1">
+                    {item.icon ? (
+                      <item.icon className="size-4" aria-hidden="true" />
+                    ) : null}
+                    <span>{item.title}</span>
+                    {item.external ? (
+                      <ExternalLinkIcon className="size-4" />
+                    ) : null}
+                  </div>
+                </Link>
+              ) : null,
+            )}
+          </div>
+        </div>
+      </DrawerContent>
+    </Drawer>
+  );
+}

@@ -1,0 +1,123 @@
+# =============================================================================
+# CI/CD Pipeline - Build and Deploy
+# =============================================================================
+#
+# Network Architecture:
+#   SECURE zone: Gitea + Runner (builds images)
+#   DMZ zone: Web server (receives deployments)
+#
+# Flow: Push → Build → Transfer image via SSH → Deploy on DMZ
+# =============================================================================
+
+name: Build & Deploy
+run-name: "Deploy: ${{ gitea.ref_name }} by ${{ gitea.actor }}"
+
+on:
+  push:
+    branches: [web]
+  pull_request:
+    branches: [web]
+
+env:
+  IMAGE_NAME: web-app
+
+jobs:
+  # ===========================================================================
+  # Quality Checks
+  # ===========================================================================
+  check:
+    name: Lint & Type Check
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./web
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v2
+        with:
+          version: 9
+          run_install: false
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
+      - name: Install Dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Lint & Type Check
+        run: |
+          pnpm check
+          pnpm exec tsc --noEmit
+
+  # ===========================================================================
+  # Build & Deploy to DMZ
+  # ===========================================================================
+  deploy:
+    name: Build & Deploy
+    runs-on: ubuntu-latest
+    needs: check
+    if: gitea.event_name == 'push'
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Build Image
+        uses: docker/build-push-action@v5
+        with:
+          context: ./web
+          load: true
+          tags: ${{ env.IMAGE_NAME }}:latest
+          provenance: false
+
+      - name: Save Image
+        run: |
+          docker save ${{ env.IMAGE_NAME }}:latest | gzip > image.tar.gz
+          ls -lh image.tar.gz
+
+      - name: Deploy to DMZ
+        uses: appleboy/scp-action@v0.1.7
+        with:
+          host: ${{ secrets.DMZ_HOST }}
+          username: ${{ secrets.DMZ_USER }}
+          key: ${{ secrets.DMZ_SSH_KEY }}
+          source: "image.tar.gz"
+          target: "/tmp"
+
+      - name: Start Application
+        uses: appleboy/ssh-action@v1.2.0
+        with:
+          host: ${{ secrets.DMZ_HOST }}
+          username: ${{ secrets.DMZ_USER }}
+          key: ${{ secrets.DMZ_SSH_KEY }}
+          script: |
+            set -e
+            cd ~/web
+            
+            echo "==> Loading new image..."
+            gunzip -c /tmp/image.tar.gz | docker load
+            rm /tmp/image.tar.gz
+            
+            echo "==> Restarting application..."
+            docker compose -f docker-compose-web.yml up -d --force-recreate app
+            
+            echo "==> Waiting for health check..."
+            sleep 10
+            for i in 1 2 3 4 5; do
+              if curl -sf http://localhost:3000/api/health > /dev/null; then
+                echo "✅ Application is healthy!"
+                docker image prune -f
+                exit 0
+              fi
+              echo "Attempt $i/5 failed, retrying..."
+              sleep 5
+            done
+            
+            echo "❌ Health check failed"
+            docker compose logs --tail=30 app
+            exit 1

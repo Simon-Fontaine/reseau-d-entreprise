@@ -1,0 +1,31 @@
+# =============================================================================
+# Local Development - Docker Compose
+# =============================================================================
+#
+# Start the database for local development:
+#   docker compose up -d
+#
+# Then in another terminal:
+#   pnpm dev
+# =============================================================================
+
+services:
+  db:
+    image: postgres:16-alpine
+    container_name: web_dev_db
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: web
+    volumes:
+      - devdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 5s
+      timeout: 3s
+      retries: 5
+
+volumes:
+  devdata:

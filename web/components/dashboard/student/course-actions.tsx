@@ -1,0 +1,56 @@
+"use client";
+
+import { useActionState, useEffect } from "react";
+import { toast } from "sonner";
+import type { ActionState } from "@/actions/student-courses";
+import { enrollInCourse, markChapterComplete } from "@/actions/student-courses";
+import { Button } from "@/components/ui/button";
+
+function useFeedback(state: ActionState | null) {
+  useEffect(() => {
+    if (state?.success) {
+      toast.success(state.message);
+    } else if (state?.success === false) {
+      toast.error(state.message);
+    }
+  }, [state]);
+}
+
+export function EnrollButton({
+  courseId,
+  className,
+  buttonClassName,
+}: {
+  courseId: string;
+  className?: string;
+  buttonClassName?: string;
+}) {
+  const [state, formAction, isPending] = useActionState(enrollInCourse, null);
+  useFeedback(state);
+
+  return (
+    <form action={formAction} className={className}>
+      <input type="hidden" name="courseId" value={courseId} />
+      <Button type="submit" disabled={isPending} className={buttonClassName}>
+        Enroll now
+      </Button>
+    </form>
+  );
+}
+
+export function ChapterCompleteButton({ chapterId }: { chapterId: string }) {
+  const [state, formAction, isPending] = useActionState(
+    markChapterComplete,
+    null,
+  );
+  useFeedback(state);
+
+  return (
+    <form action={formAction}>
+      <input type="hidden" name="chapterId" value={chapterId} />
+      <Button type="submit" variant="secondary" disabled={isPending}>
+        Mark as done
+      </Button>
+    </form>
+  );
+}
